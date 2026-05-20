@@ -74,7 +74,7 @@ GitHub often fails to render large Jupyter notebooks. If you want to view the fu
 
 **Round 1**
 - [round1_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/round1_analysis.ipynb)
-- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/TestAnalysis.ipynb)
+
 
 **Round 2**
 - [round2_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/round2_analysis.ipynb)
