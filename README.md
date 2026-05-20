@@ -70,25 +70,25 @@ The scars are in the writeups. The framework they produced is what this archive 
 
 ## 📊 Jupyter Notebook Viewer Links
 
-GitHub often fails to render large Jupyter notebooks. If you want to view the full analysis including outputs and graphs, please use the nbviewer links below:
+GitHub often fails to render large Jupyter notebooks. If you want to view the full analysis including outputs and graphs, please use the Google Colab links below:
 
 **Round 1**
-- [round1_analysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/round1_analysis.ipynb)
-- [TestAnalysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/TestAnalysis.ipynb)
+- [round1_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/round1_analysis.ipynb)
+- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/TestAnalysis.ipynb)
 
 **Round 2**
-- [round2_analysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/round2_analysis.ipynb)
-- [bid_estimation.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/bid_estimation.ipynb)
-- [Manual_Analysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/Manual_Analysis.ipynb)
+- [round2_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/round2_analysis.ipynb)
+- [bid_estimation.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/bid_estimation.ipynb)
+- [Manual_Analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/Manual_Analysis.ipynb)
 
 **Round 3**
-- [round3_analysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/round3_analysis.ipynb)
+- [round3_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/round3_analysis.ipynb)
 
 **Round 4**
-- [TestAnalysis.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/TestAnalysis.ipynb)
+- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/TestAnalysis.ipynb)
 
 **Round 5**
-- [round5_annotated.ipynb](https://nbviewer.org/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/round5_annotated.ipynb)
+- [round5_annotated.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/round5_annotated.ipynb)
 
 ---
 
