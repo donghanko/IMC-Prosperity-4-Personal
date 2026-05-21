@@ -10,6 +10,41 @@ This repository archives the full trail of my **individual research iterations**
 
 ---
 
+## Repository Structure
+
+```
+IMC-Prosperity-4-Personal/
+├── round1/
+│   ├── ROUND1.md               # description
+│   ├── _source_code/           # analysis source code with output markdown file
+│   ├── _source_data/           # data set
+│   └── ...
+├── round2/
+│   ├── ROUND2.md               # description
+│   ├── _source_code/           # analysis source code with output markdown file
+│   ├── _source_data/           # data set
+│   └── ...
+├── round3/
+│   ├── ROUND3.md               # description
+│   ├── _source_code/           # analysis source code with output markdown file
+│   ├── _source_data/           # data set
+│   └── ...
+├── round4/
+│   ├── ROUND4.md               # description
+│   ├── _source_code/           # analysis source code with output markdown file
+│   ├── _source_data/           # data set
+│   └── ...
+├── round5/
+│   ├── ROUND5.md               # description
+│   ├── _source_code/           # analysis source code with output markdown file
+│   ├── _source_data/           # data set
+│   └── ...
+├── img/             
+└── README.md
+```
+
+
+
 ## Overview
 
 Rounds 1–2 were **qualifier rounds (Phase 1)** and do not count toward the final standings. Rounds 3–5 were the main competition.
