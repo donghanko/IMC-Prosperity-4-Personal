@@ -15,27 +15,27 @@ This repository archives the full trail of my **individual research iterations**
 ```
 IMC-Prosperity-4-Personal/
 ├── round1/
-│   ├── ROUND1.md               # description
+│   ├── ROUND1_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
 │   └── ...
 ├── round2/
-│   ├── ROUND2.md               # description
+│   ├── ROUND2_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
 │   └── ...
 ├── round3/
-│   ├── ROUND3.md               # description
+│   ├── ROUND3_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
 │   └── ...
 ├── round4/
-│   ├── ROUND4.md               # description
+│   ├── ROUND4_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
 │   └── ...
 ├── round5/
-│   ├── ROUND5.md               # description
+│   ├── ROUND5_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
 │   └── ...
@@ -108,22 +108,20 @@ The scars are in the writeups. The framework they produced is what this archive 
 GitHub often fails to render large Jupyter notebooks. If you want to view the full analysis including outputs and graphs, please use the Google Colab links below:
 
 **Round 1**
-- [round1_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/round1_analysis.ipynb)
+- [round1_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/_source_code/research_code.ipynb)
 
 
 **Round 2**
-- [round2_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/round2_analysis.ipynb)
-- [bid_estimation.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/bid_estimation.ipynb)
-- [Manual_Analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/Manual_Analysis.ipynb)
+- [round2_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/_source_code/research_code.ipynb)
 
 **Round 3**
-- [round3_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/round3_analysis.ipynb)
+- [round3_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/_source_code/research_code.ipynb)
 
 **Round 4**
-- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/TestAnalysis.ipynb)
+- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/_source_code/research_code.ipynb)
 
 **Round 5**
-- [round5_annotated.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/round5_annotated.ipynb)
+- [round5_annotated.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/_source_code/research_code.ipynb)
 
 ---
 
