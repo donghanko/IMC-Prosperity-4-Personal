@@ -17,30 +17,35 @@ IMC-Prosperity-4-Personal/
 ├── round1/
 │   ├── ROUND1_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
+│   │   └── _analysis_img/      # png output images referenced in RESEARCH_CODE.md
 │   ├── _source_data/           # data set
 │   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round2/
 │   ├── ROUND2_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
+│   │   └── _analysis_img/      # png output images referenced in RESEARCH_CODE.md
 │   ├── _source_data/           # data set
 │   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round3/
 │   ├── ROUND3_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
+│   │   └── _analysis_img/      # png output images referenced in RESEARCH_CODE.md
 │   ├── _source_data/           # data set
 │   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round4/
 │   ├── ROUND4_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
+│   │   └── _analysis_img/      # png output images referenced in RESEARCH_CODE.md
 │   ├── _source_data/           # data set
 │   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round5/
 │   ├── ROUND5_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
+│   │   └── _analysis_img/      # png output images referenced in RESEARCH_CODE.md
 │   ├── _source_data/           # data set
 │   └── ...          
 └── README.md

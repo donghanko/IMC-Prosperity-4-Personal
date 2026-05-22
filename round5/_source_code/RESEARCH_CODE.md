@@ -2,15 +2,15 @@
 
 ---
 
-# Round 5: Pairs Trading — Exploratory Research Log
+# Round 5: Pairs Trading ??Exploratory Research Log
 
-> ⚠️ **This notebook is intentionally unpolished.** It documents a live search for a lead-lag signal that ultimately yielded no robust out-of-sample result. The analytical post-mortem — what went wrong and why — is in [`round5.md`](../round5.md).
+> ?�️ **This notebook is intentionally unpolished.** It documents a live search for a lead-lag signal that ultimately yielded no robust out-of-sample result. The analytical post-mortem ??what went wrong and why ??is in [`round5.md`](../round5.md).
 
 ---
 
 ## Context
 
-Round 5 introduced a large universe of ~40+ products across 10 sector groups (GALAXY_SOUNDS, MICROCHIP, SNACKPACK, SLEEP_POD, TRANSLATOR, etc.). The competition organizers hinted at a **lead-lag relationship** between assets — and that hint became the central anchoring point of this research.
+Round 5 introduced a large universe of ~40+ products across 10 sector groups (GALAXY_SOUNDS, MICROCHIP, SNACKPACK, SLEEP_POD, TRANSLATOR, etc.). The competition organizers hinted at a **lead-lag relationship** between assets ??and that hint became the central anchoring point of this research.
 
 The plan: systematically screen for cross-asset predictive structure using OBI (Order Book Imbalance) and price correlation, then build a pairs trading signal on whatever lead-lag relationship emerged.
 
@@ -96,9 +96,9 @@ else:
       UV_VISOR: ['AMBER', 'MAGENTA', 'ORANGE', 'RED', 'YELLOW']
     
 
-### Step 1–3: Spread, OBI, and Price Distributions
+### Step 1??: Spread, OBI, and Price Distributions
 
-First-pass data audit across all 10 sector groups. Spread and OBI distributions establish the baseline friction cost — any signal needs to generate edge large enough to survive these spreads.
+First-pass data audit across all 10 sector groups. Spread and OBI distributions establish the baseline friction cost ??any signal needs to generate edge large enough to survive these spreads.
 
 **What we're looking for:** Sectors with tight spreads (tradable) and non-zero mean OBI (potential directional bias).
 
@@ -107,7 +107,7 @@ First-pass data audit across all 10 sector groups. Spread and OBI distributions 
 
 
 ```python
-# ── Product-level quantitative summary ──
+# ?�?� Product-level quantitative summary ?�?�
 if 'prices' in locals():
     stats = prices.groupby(['group','product','variant']).agg(
         spread_mean  = ('spread', 'mean'),
@@ -786,7 +786,7 @@ if 'prices' in locals():
 
 
 ```python
-# ── Group-level summary (sorted by spread) ──
+# ?�?� Group-level summary (sorted by spread) ?�?�
 if 'prices' in locals():
     group_stats = prices.groupby('group').agg(
         avg_spread   = ('spread', 'mean'),
@@ -959,7 +959,7 @@ if 'prices' in locals():
 
 
     
-![png](round5_annotated_files/round5_annotated_7_0.png)
+![png](_analysis_img/round5_annotated_7_0.png)
     
 
 
@@ -985,13 +985,13 @@ if 'prices' in locals():
     plt.show()
 ```
 
-### Step 4–6: Correlation Structure
+### Step 4??: Correlation Structure
 
 Return correlation matrix across the full product universe, then broken down intra-group and cross-group.
 
 **Key question:** Are there sector pairs or product pairs with meaningful negative correlation (mean-reversion candidates) or stable co-movement (cointegration candidates)?
 
-> **Finding:** Intra-group correlations were generally high and positive — products within the same sector moved together. Cross-group correlations were close to zero. This ruled out most obvious cross-sector pair trading setups.
+> **Finding:** Intra-group correlations were generally high and positive ??products within the same sector moved together. Cross-group correlations were close to zero. This ruled out most obvious cross-sector pair trading setups.
 
 
 ## 4. Mid Price Return Correlation Matrix
@@ -1063,11 +1063,11 @@ if 'prices' in locals() and 'corr' in locals():
         pairs.sort(key=lambda x: x[2])
         if pairs:
             avg_corr = np.mean([x[2] for x in pairs])
-            print(f'\n▶ {cat}  (avg intra-corr: {avg_corr:.4f})')
+            print(f'\n??{cat}  (avg intra-corr: {avg_corr:.4f})')
             for p1, p2, c in pairs:
-                bar = '█' * int(abs(c) * 20)
-                color = '🟢' if c > 0.1 else ('🔴' if c < -0.1 else '⚪')
-                print(f'  {color} {p1:20s} ↔ {p2:20s}  {c:+.4f}  {bar}')
+                bar = '?? * int(abs(c) * 20)
+                color = '?��' if c > 0.1 else ('?��' if c < -0.1 else '??)
+                print(f'  {color} {p1:20s} ??{p2:20s}  {c:+.4f}  {bar}')
 ```
 
 ## 6. Cross-group Correlation (Quantification)
@@ -1089,11 +1089,11 @@ if 'prices' in locals() and 'returns' in locals():
     display(cross_corr.round(4).style.background_gradient(cmap='RdBu_r', vmin=-1, vmax=1))
 ```
 
-### Step 7–8: Signal Candidate Screening
+### Step 7??: Signal Candidate Screening
 
 Systematic scan for pair trading candidates (|corr| > 0.3) and OBI predictive power (corr(OBI_t, return_{t+1})).
 
-> **Finding:** OBI had weak forward predictive power across most products — correlations were small in magnitude and inconsistent across days. No product showed a reliably strong OBI → next-tick return relationship that could survive spread costs.
+> **Finding:** OBI had weak forward predictive power across most products ??correlations were small in magnitude and inconsistent across days. No product showed a reliably strong OBI ??next-tick return relationship that could survive spread costs.
 
 
 ## 7. Trading Signal Candidates ((quantified))
@@ -1136,7 +1136,7 @@ if 'prices' in locals() and 'corr' in locals():
 
 ```python
 if 'prices' in locals():
-    # ── OBI → next-tick return predictive power ──
+    # ?�?� OBI ??next-tick return predictive power ?�?�
     print('='*80)
     print('OBI PREDICTIVE POWER: corr(OBI_t, return_t+1) per product')
     print('='*80)
@@ -1163,7 +1163,7 @@ if 'prices' in locals():
 
 ## Phase 2: Sector-Level Structure
 
-*Goal: Look for lead-lag at the sector index level — does one sector systematically move before another?*
+*Goal: Look for lead-lag at the sector index level ??does one sector systematically move before another?*
 
 Sector indices built as simple price sums per group, visualized day by day.
 
@@ -1277,7 +1277,7 @@ if 'prices' in locals():
 
 ### SNACKPACK: CHOCO / VANI Log-Price Spread
 
-Log-price ratio between CHOCOLATE and VANILLA — testing for mean-reversion in the spread.
+Log-price ratio between CHOCOLATE and VANILLA ??testing for mean-reversion in the spread.
 
 > **Finding:** The log spread showed no stable mean-reverting behavior. Drift was present but inconsistent across days. Not a reliable signal.
 
@@ -1323,13 +1323,13 @@ if 'prices' in locals():
 
 
     
-![png](round5_annotated_files/round5_annotated_29_0.png)
+![png](_analysis_img/round5_annotated_29_0.png)
     
 
 
 ### SNACKPACK: Minimum Volatility PCA Basket
 
-PCA-derived minimum-variance basket across all 5 SNACKPACK variants. Weights: CHOC ×1.0, VANI ×0.958, PISTA ×−0.111, STRAW ×0.138, RASP ×−0.016.
+PCA-derived minimum-variance basket across all 5 SNACKPACK variants. Weights: CHOC ×1.0, VANI ×0.958, PISTA ×??.111, STRAW ×0.138, RASP ×??.016.
 
 > **Finding:** The basket variance was reduced but the residual series showed no mean-reverting structure exploitable within the spread cost constraint. PCA basket construction without a stationary spread hypothesis is just variance reduction, not a trading signal.
 
@@ -1390,7 +1390,7 @@ if 'prices' in locals():
 
 ---
 
-## Phase 4: OBI-Based Lead-Lag — Sector-by-Sector
+## Phase 4: OBI-Based Lead-Lag ??Sector-by-Sector
 
 *This is where the most time was spent. The organizer hint about lead-lag pushed the research heavily toward OBI as the leading indicator.*
 
@@ -1398,7 +1398,7 @@ The approach: for each sector, treat OBI spikes from one product as a signal, th
 
 Tested sectors: **SNACKPACK** (cells below), **TRANSLATOR**, **SLEEP_POD**.
 
-> ⚠️ **Critical flaw:** All tests below were run on **Day 2 only**. No OOS validation across Day 3 or Day 4 was completed before time ran out. This is the core failure — signals that appeared directional on Day 2 were not verified to be stable.
+> ?�️ **Critical flaw:** All tests below were run on **Day 2 only**. No OOS validation across Day 3 or Day 4 was completed before time ran out. This is the core failure ??signals that appeared directional on Day 2 were not verified to be stable.
 
 
 
@@ -1477,7 +1477,7 @@ def main():
     
     save_path = DATA_DIR / "sector_micro_price_sum.png"
     plt.savefig(save_path, dpi=150)
-    print(f"\n✅ Plot successfully saved to {save_path}")
+    print(f"\n??Plot successfully saved to {save_path}")
 
 if __name__ == "__main__":
     main()
@@ -1493,12 +1493,12 @@ if __name__ == "__main__":
     Pivoting data and calculating sector sums...
     Plotting data...
     
-    ✅ Plot successfully saved to d:\imc\ROUND5\sector_micro_price_sum.png
+    ??Plot successfully saved to d:\imc\ROUND5\sector_micro_price_sum.png
     
 
 
     
-![png](round5_annotated_files/round5_annotated_34_2.png)
+![png](_analysis_img/round5_annotated_34_2.png)
     
 
 
@@ -1506,7 +1506,7 @@ if __name__ == "__main__":
 
 Testing whether OBI spikes in VANILLA, RASPBERRY, or STRAWBERRY predict short-term price moves in other SNACKPACK variants.
 
-> **Finding:** Some directional response was visible at 1–5 tick lags, but signal magnitude was smaller than the bid-ask spread. Entry at the ask (buy signal) or bid (sell signal) immediately put the position at a loss that the subsequent move couldn't recover. Net edge: negative after spread costs.
+> **Finding:** Some directional response was visible at 1?? tick lags, but signal magnitude was smaller than the bid-ask spread. Entry at the ask (buy signal) or bid (sell signal) immediately put the position at a loss that the subsequent move couldn't recover. Net edge: negative after spread costs.
 
 
 
@@ -1555,11 +1555,11 @@ plt.show()
 
 
     
-![png](round5_annotated_files/round5_annotated_36_0.png)
+![png](_analysis_img/round5_annotated_36_0.png)
     
 
 
-#### SNACKPACK → PISTACHIO Lead-Lag Test
+#### SNACKPACK ??PISTACHIO Lead-Lag Test
 
 Specifically testing whether VANILLA/RASPBERRY/STRAWBERRY OBI leads PISTACHIO price moves.
 
@@ -1639,7 +1639,7 @@ plt.show()
 
 
     
-![png](round5_annotated_files/round5_annotated_38_0.png)
+![png](_analysis_img/round5_annotated_38_0.png)
     
 
 
@@ -1696,13 +1696,13 @@ plt.show()
 
 
     
-![png](round5_annotated_files/round5_annotated_40_0.png)
+![png](_analysis_img/round5_annotated_40_0.png)
     
 
 
 #### TRANSLATOR: Cross-product Lead-Lag
 
-Testing SPACE_GRAY / ECLIPSE_CHARCOAL / VOID_BLUE OBI → GRAPHITE_MIST price response.
+Testing SPACE_GRAY / ECLIPSE_CHARCOAL / VOID_BLUE OBI ??GRAPHITE_MIST price response.
 
 > **Finding:** No consistent directional response. Forward price curves (mid, ask, bid) were approximately flat after signal triggers, indistinguishable from noise.
 
@@ -1736,7 +1736,7 @@ df_filtered['obi'] = (df_filtered['bid_vol'] - df_filtered['ask_vol']) / df_filt
 pivot_obi = df_filtered[df_filtered['product'].isin(leaders)].pivot_table(index='timestamp', columns='product', values='obi').fillna(0)
 pivot_price = df_filtered[df_filtered['product'] == follower].set_index('timestamp')['mid_price']
 
-# Compute follower's next-tick price change (Price(t+1) − Price(t))
+# Compute follower's next-tick price change (Price(t+1) ??Price(t))
 # 1-tick profit from entering at t based on OBI signal at t
 follower_diff = pivot_price.diff().shift(-1)
 
@@ -1746,7 +1746,7 @@ threshold = 0.5
 # Visualization: subplot per leader (3 total)
 fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(10, 12), sharex=True)
 
-print(f"=== {follower} Price change statistics (t → t+1) ===")
+print(f"=== {follower} Price change statistics (t ??t+1) ===")
 
 for i, leader in enumerate(leaders):
     # Extract timestamps satisfying the condition
@@ -1790,24 +1790,24 @@ plt.show()
 
 ```
 
-    === TRANSLATOR_GRAPHITE_MIST 가격 변화량 (t -> t+1) 통계 ===
+    === TRANSLATOR_GRAPHITE_MIST 가�?변?�량 (t -> t+1) ?�계 ===
     
     [TRANSLATOR_SPACE_GRAY]
-     - OBI >= 0.5  평균 가격 변화: +0.3179 (표본 수: 173)
-     - OBI <= -0.5 평균 가격 변화: -0.3533 (표본 수: 184)
+     - OBI >= 0.5  ?�균 가�?변?? +0.3179 (?�본 ?? 173)
+     - OBI <= -0.5 ?�균 가�?변?? -0.3533 (?�본 ?? 184)
     
     [TRANSLATOR_ECLIPSE_CHARCOAL]
-     - OBI >= 0.5  평균 가격 변화: +0.2315 (표본 수: 203)
-     - OBI <= -0.5 평균 가격 변화: -0.3333 (표본 수: 222)
+     - OBI >= 0.5  ?�균 가�?변?? +0.2315 (?�본 ?? 203)
+     - OBI <= -0.5 ?�균 가�?변?? -0.3333 (?�본 ?? 222)
     
     [TRANSLATOR_VOID_BLUE]
-     - OBI >= 0.5  평균 가격 변화: +1.0920 (표본 수: 87)
-     - OBI <= -0.5 평균 가격 변화: -0.1893 (표본 수: 103)
+     - OBI >= 0.5  ?�균 가�?변?? +1.0920 (?�본 ?? 87)
+     - OBI <= -0.5 ?�균 가�?변?? -0.1893 (?�본 ?? 103)
     
 
 
     
-![png](round5_annotated_files/round5_annotated_42_1.png)
+![png](_analysis_img/round5_annotated_42_1.png)
     
 
 
@@ -1857,7 +1857,7 @@ for i, leader in enumerate(leaders):
     sell_means = []
     
     for lag in range(1, MAX_LAG + 1):
-        # Price change from entry at t to exit at t+lag (Price(t+lag) − Price(t))
+        # Price change from entry at t to exit at t+lag (Price(t+lag) ??Price(t))
         future_diff = pivot_price.shift(-lag) - pivot_price
         
         buy_diffs = future_diff.loc[future_diff.index.intersection(buy_times)].dropna()
@@ -1867,8 +1867,8 @@ for i, leader in enumerate(leaders):
         sell_means.append(sell_diffs.mean() if len(sell_diffs) > 0 else 0)
         
     print(f"\n[{leader}]")
-    print(f" OBI >= {threshold} (buy) mean 1–10 tick profit: {[round(x, 2) for x in buy_means]}")
-    print(f" OBI <= -{threshold} (sell) mean 1–10 tick profit: {[round(x, 2) for x in sell_means]}")
+    print(f" OBI >= {threshold} (buy) mean 1??0 tick profit: {[round(x, 2) for x in buy_means]}")
+    print(f" OBI <= -{threshold} (sell) mean 1??0 tick profit: {[round(x, 2) for x in sell_means]}")
     
     # Line chart visualization
     ax = axes[i]
@@ -1893,24 +1893,24 @@ plt.show()
 
 ```
 
-    === TRANSLATOR_GRAPHITE_MIST 진입 후 N틱 누적 가격 변화(수익) 평균 ===
+    === TRANSLATOR_GRAPHITE_MIST 진입 ??N???�적 가�?변???�익) ?�균 ===
     
     [TRANSLATOR_SPACE_GRAY]
-     OBI >= 0.5 (매수) 1~10틱 평균 수익: [0.32, -1.22, -0.99, -1.28, -1.88, -0.34, -0.95, -0.29, -0.21, 0.76]
-     OBI <= -0.5 (매도) 1~10틱 평균 수익: [-0.35, -1.12, -1.54, -1.83, -2.46, -3.32, -3.32, -3.88, -4.16, -5.3]
+     OBI >= 0.5 (매수) 1~10???�균 ?�익: [0.32, -1.22, -0.99, -1.28, -1.88, -0.34, -0.95, -0.29, -0.21, 0.76]
+     OBI <= -0.5 (매도) 1~10???�균 ?�익: [-0.35, -1.12, -1.54, -1.83, -2.46, -3.32, -3.32, -3.88, -4.16, -5.3]
     
     [TRANSLATOR_ECLIPSE_CHARCOAL]
-     OBI >= 0.5 (매수) 1~10틱 평균 수익: [0.23, -0.3, -0.01, -0.44, 0.26, 0.83, 1.46, 2.43, 2.96, 3.37]
-     OBI <= -0.5 (매도) 1~10틱 평균 수익: [-0.33, -0.9, -0.75, -1.48, -2.25, -3.02, -3.21, -4.08, -4.89, -5.7]
+     OBI >= 0.5 (매수) 1~10???�균 ?�익: [0.23, -0.3, -0.01, -0.44, 0.26, 0.83, 1.46, 2.43, 2.96, 3.37]
+     OBI <= -0.5 (매도) 1~10???�균 ?�익: [-0.33, -0.9, -0.75, -1.48, -2.25, -3.02, -3.21, -4.08, -4.89, -5.7]
     
     [TRANSLATOR_VOID_BLUE]
-     OBI >= 0.5 (매수) 1~10틱 평균 수익: [1.09, 1.45, 1.9, 2.13, 2.14, 2.65, 3.38, 5.11, 5.5, 5.35]
-     OBI <= -0.5 (매도) 1~10틱 평균 수익: [-0.19, -2.2, -3.29, -3.99, -4.81, -5.49, -5.18, -6.86, -7.85, -8.39]
+     OBI >= 0.5 (매수) 1~10???�균 ?�익: [1.09, 1.45, 1.9, 2.13, 2.14, 2.65, 3.38, 5.11, 5.5, 5.35]
+     OBI <= -0.5 (매도) 1~10???�균 ?�익: [-0.19, -2.2, -3.29, -3.99, -4.81, -5.49, -5.18, -6.86, -7.85, -8.39]
     
 
 
     
-![png](round5_annotated_files/round5_annotated_43_1.png)
+![png](_analysis_img/round5_annotated_43_1.png)
     
 
 
@@ -2019,19 +2019,19 @@ plt.show()
 
 
     
-![png](round5_annotated_files/round5_annotated_44_0.png)
+![png](_analysis_img/round5_annotated_44_0.png)
     
 
 
-#### SLEEP_POD: POLYESTER ↔ NYLON Bidirectional Lead-Lag
+#### SLEEP_POD: POLYESTER ??NYLON Bidirectional Lead-Lag
 
 The most promising candidate identified during the search. SLEEP_POD had two variants (POLYESTER, NYLON) with high intra-group correlation.
 
-Tested both directions: POLYESTER OBI → NYLON price, and NYLON OBI → POLYESTER price.
+Tested both directions: POLYESTER OBI ??NYLON price, and NYLON OBI ??POLYESTER price.
 
-> **Finding (Day 2):** A weak but visible directional response appeared at 1–10 tick lags in the POLYESTER → NYLON direction. Buy signals (OBI ≥ 0.5) showed slight positive forward returns in NYLON over 5–10 ticks.
+> **Finding (Day 2):** A weak but visible directional response appeared at 1??0 tick lags in the POLYESTER ??NYLON direction. Buy signals (OBI ??0.5) showed slight positive forward returns in NYLON over 5??0 ticks.
 >
-> ⚠️ **This is where anchoring bias became critical.** The organizer's lead-lag hint made this weak Day 2 signal feel like confirmation. The correct next step was OOS validation on Day 3/4. That step was skipped under time pressure — and this signal, combined with ad-hoc Z-score pair construction without cointegration testing, formed the basis of the final deployed strategy.
+> ?�️ **This is where anchoring bias became critical.** The organizer's lead-lag hint made this weak Day 2 signal feel like confirmation. The correct next step was OOS validation on Day 3/4. That step was skipped under time pressure ??and this signal, combined with ad-hoc Z-score pair construction without cointegration testing, formed the basis of the final deployed strategy.
 >
 > **In the live environment, the strategy collapsed.** The Day 2 signal did not generalize.
 
@@ -2050,7 +2050,7 @@ DATA_DIR = Path(r"d:\imc\ROUND5")
 day = 2
 prices = pd.read_csv(DATA_DIR / f"prices_round_5_day_{day}.csv", sep=';')
 
-# Set pair direction for analysis (Leader → Follower)
+# Set pair direction for analysis (Leader ??Follower)
 pairs = [
     {'leader': 'SLEEP_POD_POLYESTER', 'follower': 'SLEEP_POD_NYLON'},
     {'leader': 'SLEEP_POD_NYLON', 'follower': 'SLEEP_POD_POLYESTER'}
@@ -2097,8 +2097,8 @@ for i, pair in enumerate(pairs):
         sell_means.append(sell_diffs.mean() if len(sell_diffs) > 0 else 0)
         
     print(f"\n[Leader: {leader} -> Follower: {follower}]")
-    print(f" OBI >= {threshold} (buy) mean 1–10 tick profit: {[round(x, 2) for x in buy_means[:10]]}")
-    print(f" OBI <= -{threshold} (sell) mean 1–10 tick profit: {[round(x, 2) for x in sell_means[:10]]}")
+    print(f" OBI >= {threshold} (buy) mean 1??0 tick profit: {[round(x, 2) for x in buy_means[:10]]}")
+    print(f" OBI <= -{threshold} (sell) mean 1??0 tick profit: {[round(x, 2) for x in sell_means[:10]]}")
     
     # Line chart visualization
     ax = axes[i]
@@ -2120,20 +2120,20 @@ plt.show()
 
 ```
 
-    === OBI 임계값(±0.5) 돌파 후 N틱 누적 가격 변화(수익) 평균 (Day 2) ===
+    === OBI ?�계�?±0.5) ?�파 ??N???�적 가�?변???�익) ?�균 (Day 2) ===
     
     [Leader: SLEEP_POD_POLYESTER -> Follower: SLEEP_POD_NYLON]
-     OBI >= 0.5 (매수) 1~10틱 평균 수익: [2.9, 3.21, 3.24, 5.26, 3.67, 4.25, 3.72, 3.47, 3.33, 4.26]
-     OBI <= -0.5 (매도) 1~10틱 평균 수익: [-3.67, -3.41, -4.87, -3.98, -4.12, -5.36, -5.99, -6.11, -8.16, -9.38]
+     OBI >= 0.5 (매수) 1~10???�균 ?�익: [2.9, 3.21, 3.24, 5.26, 3.67, 4.25, 3.72, 3.47, 3.33, 4.26]
+     OBI <= -0.5 (매도) 1~10???�균 ?�익: [-3.67, -3.41, -4.87, -3.98, -4.12, -5.36, -5.99, -6.11, -8.16, -9.38]
     
     [Leader: SLEEP_POD_NYLON -> Follower: SLEEP_POD_POLYESTER]
-     OBI >= 0.5 (매수) 1~10틱 평균 수익: [1.33, 1.39, 0.7, 0.12, 0.31, 1.24, 0.86, 0.69, 0.01, 0.52]
-     OBI <= -0.5 (매도) 1~10틱 평균 수익: [-1.44, -1.29, -1.05, -0.38, -0.8, -0.19, -0.61, -0.48, 0.11, 0.24]
+     OBI >= 0.5 (매수) 1~10???�균 ?�익: [1.33, 1.39, 0.7, 0.12, 0.31, 1.24, 0.86, 0.69, 0.01, 0.52]
+     OBI <= -0.5 (매도) 1~10???�균 ?�익: [-1.44, -1.29, -1.05, -0.38, -0.8, -0.19, -0.61, -0.48, 0.11, 0.24]
     
 
 
     
-![png](round5_annotated_files/round5_annotated_46_1.png)
+![png](_analysis_img/round5_annotated_46_1.png)
     
 
 
@@ -2143,7 +2143,7 @@ Extending the lag window to 40 ticks, decomposing by actual entry price (ask for
 
 > **Final finding:** Even at 40 ticks, the profit zone (area between entry price and future bid/ask) was minimal or negative. The signal that looked directional on Day 2 at mid-price level did not survive when actual transaction costs (spread) were applied. The entry line and the future bid/ask curves converged to near-zero edge.
 >
-> This is the quantitative record of why the strategy failed. Not because the idea was wrong in theory — lead-lag in correlated asset pairs is a legitimate microstructure phenomenon. But because the evidence for it here was too thin, too short, and never validated out-of-sample.
+> This is the quantitative record of why the strategy failed. Not because the idea was wrong in theory ??lead-lag in correlated asset pairs is a legitimate microstructure phenomenon. But because the evidence for it here was too thin, too short, and never validated out-of-sample.
 
 ---
 
@@ -2155,7 +2155,7 @@ Extending the lag window to 40 ticks, decomposing by actual entry price (ask for
 | Sector indices | Cross-sector lead-lag | No consistent timing pattern |
 | SNACKPACK pairs | OBI lead-lag, PCA basket | Negative edge after spread costs |
 | TRANSLATOR pairs | OBI lead-lag | Signal indistinguishable from noise |
-| SLEEP_POD pairs | OBI lead-lag (POLYESTER ↔ NYLON) | Weak Day 2 signal, not validated OOS — this became the deployed strategy |
+| SLEEP_POD pairs | OBI lead-lag (POLYESTER ??NYLON) | Weak Day 2 signal, not validated OOS ??this became the deployed strategy |
 
 **The failure was not finding the wrong asset. The failure was treating a Day 2 in-sample observation as a robust signal without OOS validation.**
 
@@ -2277,7 +2277,7 @@ plt.show()
 
 
     
-![png](round5_annotated_files/round5_annotated_48_0.png)
+![png](_analysis_img/round5_annotated_48_0.png)
     
 
 

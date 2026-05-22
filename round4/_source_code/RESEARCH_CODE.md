@@ -11,7 +11,7 @@
 | **Part 1** | **Algorithmic Trading** | Trader ID behavioral taxonomy, empirical delta-hedging verification, Wing model surface fitting, and log-moneyness modeling via Ornstein-Uhlenbeck (OU) processes. |
 | **Part 2** | **Manual Trading** | Portfolio risk optimization for AETHER_CRYSTAL exotic options under localized path-variance constraints. |
 
-## Setup â€” Imports & Data Loading
+## Setup ??Imports & Data Loading
 
 
 ```python
@@ -23,7 +23,7 @@ from plotly.subplots import make_subplots
 import warnings
 warnings.filterwarnings('ignore')
 
-# â”€â”€ Data loading â”€â”€
+# ?€?€ Data loading ?€?€
 DAYS = [1, 2, 3]
 prices = pd.concat(
     [pd.read_csv(f'prices_round_4_day_{d}.csv', sep=';').assign(day=d-1) for d in DAYS],
@@ -54,7 +54,7 @@ print(f"Marks: {sorted(set(trades['buyer'].unique()) | set(trades['seller'].uniq
     
 
 ---
-# Part 1: Algorithmic Trading â€” Order Flow & Microstructure
+# Part 1: Algorithmic Trading ??Order Flow & Microstructure
 
 ## 1-1. Trader Taxonomy
 
@@ -82,7 +82,7 @@ option_strikes = {
     'VEV_5400': 5400, 'VEV_5500': 5500, 'VEV_6000': 6000, 'VEV_6500': 6500,
 }
 
-# â”€â”€â”€ BS helpers (vectorized) â”€â”€â”€
+# ?€?€?€ BS helpers (vectorized) ?€?€?€
 def bs_call_price_vec(S, K, T, sigma, r=0):
     S, T, sigma = np.asarray(S, float), np.asarray(T, float), np.asarray(sigma, float)
     result = np.maximum(S - K, 0.0)
@@ -122,7 +122,7 @@ def calc_iv_bisection_vec(S, K, T, C, r=0, tol=1e-5, max_iter=100):
     sigma[valid] = (L + H) / 2.0
     return sigma
 
-# â”€â”€â”€ 1. Build IV surface from market prices â”€â”€â”€
+# ?€?€?€ 1. Build IV surface from market prices ?€?€?€
 print("Computing IV for each option from market data (bisection)...")
 
 und_px = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_ts', 'mid_price']].copy()
@@ -147,7 +147,7 @@ for sym, K in option_strikes.items():
     else:
         print(f"  {sym} (K={K}): IV = N/A")
 
-# â”€â”€â”€ 2. Mark 01 positions â”€â”€â”€
+# ?€?€?€ 2. Mark 01 positions ?€?€?€
 m1_all = trades[(trades['buyer'] == 'Mark 01') | (trades['seller'] == 'Mark 01')].copy()
 m1_all['signed_qty'] = m1_all.apply(
     lambda r: r['quantity'] if r['buyer'] == 'Mark 01' else -r['quantity'], axis=1)
@@ -168,7 +168,7 @@ print(f"\nVEV_6000 buy price: {otm_trades[otm_trades['symbol']=='VEV_6000']['pri
 print(f"VEV_6500 buy price: {otm_trades[otm_trades['symbol']=='VEV_6500']['price'].unique()}")
 print(f"Total OTM cost: {(otm_trades['price'] * otm_trades['quantity']).sum():.2f}")
 
-# â”€â”€â”€ 3. Portfolio delta using market-implied IV â”€â”€â”€
+# ?€?€?€ 3. Portfolio delta using market-implied IV ?€?€?€
 print("\nComputing portfolio delta with market-implied IV...")
 
 ts_keys = iv_all['global_ts'].values
@@ -237,7 +237,7 @@ print(f"  OTM delta contribution: {delta_df['otm_delta'].abs().mean():.4f}")
 print(f"  Delta WITH == WITHOUT OTM? "
       f"{np.allclose(delta_df['portfolio_delta'], delta_df['delta_without_otm'], atol=0.5)}")
 
-# â”€â”€â”€ 4. Plotly chart â”€â”€â”€
+# ?€?€?€ 4. Plotly chart ?€?€?€
 fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
     subplot_titles=('Mark 01 Portfolio Delta (Market-Implied IV)',
                     'Mark 01 Cumulative Positions',
@@ -275,7 +275,7 @@ fig.update_yaxes(title_text='Price', row=3, col=1)
 fig.update_xaxes(title_text='Global Timestamp', row=3, col=1)
 fig.show()
 
-# â”€â”€â”€ 5. Conclusion â”€â”€â”€
+# ?€?€?€ 5. Conclusion ?€?€?€
 print("\n" + "=" * 70)
 print("CONCLUSION")
 print("=" * 70)
@@ -284,7 +284,7 @@ VEV_6000/6500: bought at price=0 (FREE), IV from market ~0.80/~1.18
 OTM delta contribution: {delta_df['otm_delta'].abs().mean():.4f}
 Portfolio mean delta: {delta_df['portfolio_delta'].mean():+.1f}
 Mark 01 is NOT delta-neutral (large positive delta bias).
-OTM calls add minimal delta â€” they are cheap/free convex payoff.
+OTM calls add minimal delta ??they are cheap/free convex payoff.
 """)
 
 ```
@@ -336,7 +336,7 @@ OTM calls add minimal delta â€” they are cheap/free convex payoff.
     OTM delta contribution: 5.2716
     Portfolio mean delta: +145.6
     Mark 01 is NOT delta-neutral (large positive delta bias).
-    OTM calls add minimal delta â€” they are cheap/free convex payoff.
+    OTM calls add minimal delta ??they are cheap/free convex payoff.
     
     
 
@@ -393,7 +393,7 @@ def calc_iv_bisection_vec(S, K, T, C, r=0, tol=1e-5, max_iter=100):
     sigma[valid] = (L + H) / 2.0
     return sigma
 
-# â”€â”€â”€ 1. IV surface (reuse if already computed) â”€â”€â”€
+# ?€?€?€ 1. IV surface (reuse if already computed) ?€?€?€
 try:
     _ = iv_all['T']
     print("Reusing IV surface from previous cell...")
@@ -425,7 +425,7 @@ def find_nearest_idx(ts):
     elif idx > 0 and abs(ts_keys[idx] - ts) > abs(ts_keys[idx-1] - ts): idx -= 1
     return idx
 
-# â”€â”€â”€ 2. Mark 14 positions â”€â”€â”€
+# ?€?€?€ 2. Mark 14 positions ?€?€?€
 MARK = 'Mark 14'
 m_all = trades[(trades['buyer'] == MARK) | (trades['seller'] == MARK)].copy()
 m_all['signed_qty'] = m_all.apply(
@@ -444,7 +444,7 @@ for sym in sorted(m_all['symbol'].unique()):
     avg_sell = sub[sub['signed_qty'] < 0]['price'].mean() if (sub['signed_qty'] < 0).any() else 0
     print(f"  {sym:25s}: net={net:+6d}  bought={bought:5d} @{avg_buy:7.2f}  sold={sold:5d} @{avg_sell:7.2f}")
 
-# â”€â”€â”€ 3. Portfolio delta (VEV options only, skip HYDROGEL_PACK) â”€â”€â”€
+# ?€?€?€ 3. Portfolio delta (VEV options only, skip HYDROGEL_PACK) ?€?€?€
 print("\nComputing portfolio delta...")
 positions = {}
 delta_records = []
@@ -503,7 +503,7 @@ print(f"  |delta| < 5:    {(delta_df['portfolio_delta'].abs() < 5).mean()*100:.1
 print(f"  |delta| < 10:   {(delta_df['portfolio_delta'].abs() < 10).mean()*100:.1f}%")
 print(f"  |delta| < 20:   {(delta_df['portfolio_delta'].abs() < 20).mean()*100:.1f}%")
 
-# â”€â”€â”€ 4. Plotly chart â”€â”€â”€
+# ?€?€?€ 4. Plotly chart ?€?€?€
 fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
     subplot_titles=(f'{MARK} Portfolio Delta (Market-Implied IV)',
                     f'{MARK} Cumulative Positions',
@@ -541,7 +541,7 @@ fig.update_yaxes(title_text='Price', row=3, col=1)
 fig.update_xaxes(title_text='Global Timestamp', row=3, col=1)
 fig.show()
 
-# â”€â”€â”€ 5. Conclusion â”€â”€â”€
+# ?€?€?€ 5. Conclusion ?€?€?€
 print(f"\n{'='*70}")
 print("CONCLUSION")
 print(f"{'='*70}")
@@ -552,12 +552,12 @@ print(f"""
   - Also trades HYDROGEL_PACK (separate product, excluded from delta)
 
 Delta Neutrality:
-  - Mean |delta|: {delta_df['portfolio_delta'].abs().mean():.1f} â†’ NOT delta-neutral
+  - Mean |delta|: {delta_df['portfolio_delta'].abs().mean():.1f} ??NOT delta-neutral
   - Strong long delta bias (mean delta = {delta_df['portfolio_delta'].mean():+.1f})
   - VEV_4000 (ITM call, delta~1.0) acts almost like underlying
   - Underlying + VEV_4000 combined create large directional exposure
 
-â†’ {MARK} is a DIRECTIONAL BUYER, not a delta hedger.
+??{MARK} is a DIRECTIONAL BUYER, not a delta hedger.
   Uses VEV_4000 as leveraged long (same delta as underlying but cheaper margin).
 """)
 
@@ -600,26 +600,26 @@ Delta Neutrality:
       - Also trades HYDROGEL_PACK (separate product, excluded from delta)
     
     Delta Neutrality:
-      - Mean |delta|: 133.1 â†’ NOT delta-neutral
+      - Mean |delta|: 133.1 ??NOT delta-neutral
       - Strong long delta bias (mean delta = +130.7)
       - VEV_4000 (ITM call, delta~1.0) acts almost like underlying
       - Underlying + VEV_4000 combined create large directional exposure
     
-    â†’ Mark 14 is a DIRECTIONAL BUYER, not a delta hedger.
+    ??Mark 14 is a DIRECTIONAL BUYER, not a delta hedger.
       Uses VEV_4000 as leveraged long (same delta as underlying but cheaper margin).
     
     
 
 
 ```python
-# === Mark 22 Analysis: Selling Underlying + ATM Calls â†’ Price Impact ===
+# === Mark 22 Analysis: Selling Underlying + ATM Calls ??Price Impact ===
 from scipy.stats import norm
 
 MARK = 'Mark 22'
 STARTING_DAYS_TO_EXPIRY = 4
 ANNUAL_DAYS = 252
 
-# â”€â”€â”€ 1. Positions â”€â”€â”€
+# ?€?€?€ 1. Positions ?€?€?€
 m_all = trades[(trades['buyer'] == MARK) | (trades['seller'] == MARK)].copy()
 m_all['signed_qty'] = m_all.apply(
     lambda r: r['quantity'] if r['buyer'] == MARK else -r['quantity'], axis=1)
@@ -640,14 +640,14 @@ print(f"\nMark 22 is OVERWHELMINGLY a seller:")
 print(f"  As buyer:  {(m_all['buyer'] == MARK).sum()}")
 print(f"  As seller: {(m_all['seller'] == MARK).sum()}")
 
-# â”€â”€â”€ 2. Counterparties â”€â”€â”€
+# ?€?€?€ 2. Counterparties ?€?€?€
 print(f"\n{MARK} sells TO:")
 for name, grp in m_all[m_all['seller'] == MARK].groupby('buyer'):
     syms = grp.groupby('symbol')['quantity'].sum()
     sym_str = ', '.join([f"{s}({q})" for s, q in syms.items()])
     print(f"  {name}: {sym_str}")
 
-# â”€â”€â”€ 3. Price impact after selling underlying â”€â”€â”€
+# ?€?€?€ 3. Price impact after selling underlying ?€?€?€
 und_prices_ts = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_ts', 'mid_price']].copy()
 und_prices_ts = und_prices_ts.sort_values('global_ts').set_index('global_ts')
 
@@ -678,7 +678,7 @@ for la in LOOKAHEADS:
     if len(v) > 0:
         print(f"  +{la:>7d} ts: mean={v.mean():+.2f}, median={v.median():+.2f}, >0: {(v>0).mean()*100:.1f}%")
 
-# â”€â”€â”€ 4. Price impact after selling ATM calls â”€â”€â”€
+# ?€?€?€ 4. Price impact after selling ATM calls ?€?€?€
 atm_syms = ['VEV_5200', 'VEV_5300', 'VEV_5400', 'VEV_5500']
 vev_sells = m_all[(m_all['symbol'].isin(atm_syms)) & (m_all['signed_qty'] < 0)].copy()
 
@@ -706,7 +706,7 @@ for la in LOOKAHEADS:
     if len(v) > 0:
         print(f"  +{la:>7d} ts: mean={v.mean():+.2f}, median={v.median():+.2f}, >0: {(v>0).mean()*100:.1f}%")
 
-# â”€â”€â”€ 5. Plotly: Cumulative position + underlying price â”€â”€â”€
+# ?€?€?€ 5. Plotly: Cumulative position + underlying price ?€?€?€
 positions = {}
 pos_records = []
 for ts in sorted(m_all['global_ts'].unique()):
@@ -774,7 +774,7 @@ fig.update_yaxes(title_text='Return after sell', row=3, col=1)
 fig.update_xaxes(title_text='Global Timestamp', row=3, col=1)
 fig.show()
 
-# â”€â”€â”€ 6. Conclusion â”€â”€â”€
+# ?€?€?€ 6. Conclusion ?€?€?€
 print(f"\n{'='*70}")
 print("CONCLUSION")
 print(f"{'='*70}")
@@ -788,8 +788,8 @@ Mark 22 is the PRIMARY MARKET MAKER / OPTION WRITER:
 Price impact after Mark 22 sells underlying:
   - Short-term (+100~1000 ts): price goes UP ~+1.5 (88% of the time!)
   - Medium-term (+10000 ts): effect dissipates
-  â†’ Mark 22 sells INTO rising demand (absorbs buy pressure)
-  â†’ This is classic market-maker behavior: provide liquidity, get adversely selected
+  ??Mark 22 sells INTO rising demand (absorbs buy pressure)
+  ??This is classic market-maker behavior: provide liquidity, get adversely selected
 
 Mark 22 does NOT sell underlying + ATM calls simultaneously (only 2 overlaps).
 They sell options to Mark 01/14, and separately sell underlying to Mark 49/55/67.
@@ -864,8 +864,8 @@ They sell options to Mark 01/14, and separately sell underlying to Mark 49/55/67
     Price impact after Mark 22 sells underlying:
       - Short-term (+100~1000 ts): price goes UP ~+1.5 (88% of the time!)
       - Medium-term (+10000 ts): effect dissipates
-      â†’ Mark 22 sells INTO rising demand (absorbs buy pressure)
-      â†’ This is classic market-maker behavior: provide liquidity, get adversely selected
+      ??Mark 22 sells INTO rising demand (absorbs buy pressure)
+      ??This is classic market-maker behavior: provide liquidity, get adversely selected
     
     Mark 22 does NOT sell underlying + ATM calls simultaneously (only 2 overlaps).
     They sell options to Mark 01/14, and separately sell underlying to Mark 49/55/67.
@@ -894,7 +894,7 @@ for sym in sorted(m_all['symbol'].unique()):
     avg_sell = sub[sub['signed_qty'] < 0]['price'].mean() if (sub['signed_qty'] < 0).any() else 0
     print(f"  {sym:25s}: net={net:+6d}  buy={bought:5d}@{avg_buy:9.2f}  sell={sold:5d}@{avg_sell:9.2f}")
 
-# â”€â”€â”€ HYDROGEL_PACK analysis â”€â”€â”€
+# ?€?€?€ HYDROGEL_PACK analysis ?€?€?€
 hg_mid = prices[prices['product'] == 'HYDROGEL_PACK'][['global_ts', 'mid_price']].copy().sort_values('global_ts')
 m_hg = m_all[m_all['symbol'] == 'HYDROGEL_PACK'].copy()
 m_hg = pd.merge_asof(m_hg.sort_values('global_ts'), hg_mid, on='global_ts', direction='nearest')
@@ -906,7 +906,7 @@ print(f"\nHYDROGEL_PACK:")
 print(f"  Avg buy @{hg_buys['price'].mean():.2f}, avg sell @{hg_sells['price'].mean():.2f}")
 print(f"  Edge: buy={hg_buys['edge'].mean():+.2f}, sell={hg_sells['edge'].mean():+.2f}")
 
-# â”€â”€â”€ VEV_4000 analysis â”€â”€â”€
+# ?€?€?€ VEV_4000 analysis ?€?€?€
 v4_mid = prices[prices['product'] == 'VEV_4000'][['global_ts', 'mid_price']].copy().sort_values('global_ts')
 m_v4 = m_all[m_all['symbol'] == 'VEV_4000'].copy()
 m_v4 = pd.merge_asof(m_v4.sort_values('global_ts'), v4_mid, on='global_ts', direction='nearest')
@@ -918,7 +918,7 @@ print(f"\nVEV_4000:")
 print(f"  Avg buy @{v4_buys['price'].mean():.2f}, avg sell @{v4_sells['price'].mean():.2f}")
 print(f"  Edge: buy={v4_buys['edge'].mean():+.2f}, sell={v4_sells['edge'].mean():+.2f}")
 
-# â”€â”€â”€ Percentile in range + forward return â”€â”€â”€
+# ?€?€?€ Percentile in range + forward return ?€?€?€
 hg_px = hg_mid.set_index('global_ts')['mid_price']
 v4_px = v4_mid.set_index('global_ts')['mid_price']
 
@@ -964,7 +964,7 @@ def analyze_timing(m_df, px_series, label):
 analyze_timing(m_hg, hg_px, 'HYDROGEL_PACK')
 analyze_timing(m_v4, v4_px, 'VEV_4000')
 
-# â”€â”€â”€ Plotly: trade markers on price chart â”€â”€â”€
+# ?€?€?€ Plotly: trade markers on price chart ?€?€?€
 fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
     subplot_titles=('HYDROGEL_PACK + Mark 38 Trades', 'VEV_4000 + Mark 38 Trades'),
     vertical_spacing=0.1)
@@ -994,7 +994,7 @@ fig.update_layout(template='plotly_white', height=700,
 fig.update_xaxes(title_text='Global Timestamp', row=2, col=1)
 fig.show()
 
-# â”€â”€â”€ Conclusion â”€â”€â”€
+# ?€?€?€ Conclusion ?€?€?€
 print(f"\n{'='*70}")
 print("CONCLUSION")
 print(f"{'='*70}")
@@ -1091,7 +1091,7 @@ Mark 38 + Mark 14 are mutual counterparties (Mark 38 loses, Mark 14 collects).
     
     
 
-### Mark 49 â€” Momentum Seller (Price Impact Test)
+### Mark 49 ??Momentum Seller (Price Impact Test)
 
 
 ```python
@@ -1505,7 +1505,7 @@ print("\nDONE")
     DONE
     
 
-### Mark 67 â€” Underlying Accumulator
+### Mark 67 ??Underlying Accumulator
 
 
 ```python
@@ -2072,7 +2072,7 @@ def compute_payoffs(paths, instruments):
 # 2. Optimal portfolio (values from mc_optimizer.py run)
 # In practice: re-run optimizer; for visualization demo, use cached result.
 # Alternatively, import and call the optimizer function directly.
-# Here we focus on visualization â€” hardcode known optimal vols or run quick optimization.
+# Here we focus on visualization ??hardcode known optimal vols or run quick optimization.
 # ============================================================
 
 # Example optimal solution from the original run (approximate values)
@@ -2131,7 +2131,7 @@ def run_visualization(vols=None):
     )
 
     # 1. Payoff Profile (Scatter)
-    # 10k paths is too many for Plotly â€” sample 5,000
+    # 10k paths is too many for Plotly ??sample 5,000
     sample_idx = np.random.choice(len(terminal_prices), 5000, replace=False)
     fig.add_trace(
         go.Scatter(
@@ -2214,7 +2214,7 @@ if __name__ == "__main__":
 ## 1-2. Delta Hedging & Arbitrage Screening
 
 **Hypothesis:** Which Mark maintains a delta-neutral position?  
-**Conclusion:** All Marks show persistent upward delta bias â€” no delta-hedging bot confirmed.
+**Conclusion:** All Marks show persistent upward delta bias ??no delta-hedging bot confirmed.
 
 
 ```python
@@ -2229,7 +2229,7 @@ option_strikes = {
     'VEV_5400': 5400, 'VEV_5500': 5500, 'VEV_6000': 6000, 'VEV_6500': 6500,
 }
 
-# â”€â”€â”€ BS helpers (vectorized) â”€â”€â”€
+# ?€?€?€ BS helpers (vectorized) ?€?€?€
 def _bs_call_price_vec(S, K, T, sigma):
     S, T, sigma = np.asarray(S, float), np.asarray(T, float), np.asarray(sigma, float)
     result = np.maximum(S - K, 0.0)
@@ -2262,7 +2262,7 @@ def _calc_iv_bisection(S, K, T, C, tol=1e-5, max_iter=100):
     sigma[valid] = (L + H) / 2.0
     return sigma
 
-# â”€â”€â”€ 1. Build IV surface â”€â”€â”€
+# ?€?€?€ 1. Build IV surface ?€?€?€
 print("Computing IV for each option (bisection, r=0)...")
 und_px = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_ts', 'mid_price']].copy()
 und_px = und_px.rename(columns={'mid_price': 'S'}).sort_values('global_ts')
@@ -2286,7 +2286,7 @@ for sym, K in option_strikes.items():
     else:
         print(f"  {sym} (K={K}): IV = N/A")
 
-# â”€â”€â”€ 2. Realized Volatility â”€â”€â”€
+# ?€?€?€ 2. Realized Volatility ?€?€?€
 print("Computing realized volatility...")
 und_ts = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_ts', 'mid_price']].copy()
 und_ts = und_ts.sort_values('global_ts')
@@ -2297,7 +2297,7 @@ und_ts['rvol'] = und_ts['log_ret'].rolling(RV_WINDOW).std() * np.sqrt(10000 * AN
 rvol_data = und_ts[['global_ts', 'rvol']].dropna()
 print(f"  RVol mean={rvol_data['rvol'].mean():.4f}, std={rvol_data['rvol'].std():.4f}")
 
-# â”€â”€â”€ 3. For each option, merge IV to trades â”€â”€â”€
+# ?€?€?€ 3. For each option, merge IV to trades ?€?€?€
 vev_trades = trades[trades['symbol'].isin(option_strikes.keys())].copy()
 all_trade_names = sorted(set(vev_trades['buyer'].unique()) | set(vev_trades['seller'].unique()))
 print(f"\nTraders in options: {all_trade_names}")
@@ -2308,7 +2308,7 @@ vev_trades = pd.merge_asof(
     iv_lookup.sort_values('global_ts'),
     on='global_ts', direction='nearest')
 
-# â”€â”€â”€ 4. Build chart â”€â”€â”€
+# ?€?€?€ 4. Build chart ?€?€?€
 COLORS = [
     '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
     '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf',
@@ -2400,7 +2400,7 @@ for i, sym in enumerate(iv_symbols, 1):
         ), row=i, col=1)
         trace_meta.append(name)
 
-# â”€â”€â”€ Dropdown filter â”€â”€â”€
+# ?€?€?€ Dropdown filter ?€?€?€
 num_traces = len(trace_meta)
 buttons = [dict(label='Show All', method='update', args=[{'visible': [True] * num_traces}])]
 for name in all_trade_names:
@@ -2448,7 +2448,7 @@ print("Done. Use dropdown (top-right) to filter by participant.")
     Done. Use dropdown (top-right) to filter by participant.
     
 
-## 1-3. Wing Model â€” IV Fair Value & Arbitrage Screening
+## 1-3. Wing Model ??IV Fair Value & Arbitrage Screening
 
 
 
@@ -2465,7 +2465,7 @@ option_strikes = {
     'VEV_5300': 5300, 'VEV_5400': 5400, 'VEV_5500': 5500,
 }
 
-# â”€â”€â”€ BS + IV â”€â”€â”€
+# ?€?€?€ BS + IV ?€?€?€
 def _bs_call_vec(S, K, T, sigma):
     S, T, sigma = np.asarray(S, float), np.asarray(T, float), np.asarray(sigma, float)
     result = np.maximum(S - K, 0.0)
@@ -2490,7 +2490,7 @@ def _iv_bisect(S, K, T, C, tol=1e-5):
     sig[ok] = (L+H)/2
     return sig
 
-# â”€â”€â”€ Wing Model â”€â”€â”€
+# ?€?€?€ Wing Model ?€?€?€
 def wing_model(x, params):
     """sigma(x) = atm + rho*x + pc*min(x,0)^2 + cc*max(x,0)^2"""
     atm, rho, pc, cc = params
@@ -2505,7 +2505,7 @@ def fit_wing(x, iv, init=None):
     except: pass
     return None
 
-# â”€â”€â”€ 1. Build IV surface â”€â”€â”€
+# ?€?€?€ 1. Build IV surface ?€?€?€
 print("1. Computing IV (bisection, r=0)...")
 und_px = prices[prices['product']=='VELVETFRUIT_EXTRACT'][['global_ts','mid_price']].copy()
 und_px = und_px.rename(columns={'mid_price':'S'}).sort_values('global_ts')
@@ -2519,7 +2519,7 @@ strikes = list(option_strikes.values())
 for sym, K in option_strikes.items():
     iv_sf[f'iv_{sym}'] = _iv_bisect(iv_sf['S'].values, K, iv_sf['T'].values, iv_sf[f'C_{sym}'].values)
 
-# â”€â”€â”€ 2. Fit Wing every 10 rows â”€â”€â”€
+# ?€?€?€ 2. Fit Wing every 10 rows ?€?€?€
 print("2. Fitting ORC Wing Model...")
 n = len(iv_sf); S_arr = iv_sf['S'].values
 wp = np.full((n,4), np.nan)
@@ -2550,14 +2550,14 @@ for sym in syms:
 iv_sf['w_atm'], iv_sf['w_rho'] = wp[:,0], wp[:,1]
 iv_sf['w_pc'], iv_sf['w_cc'] = wp[:,2], wp[:,3]
 
-# â”€â”€â”€ 3. Print residual stats â”€â”€â”€
+# ?€?€?€ 3. Print residual stats ?€?€?€
 print("\n=== Wing Residual Stats ===")
 for sym in syms:
     r = iv_sf[f'wr_{sym}'].dropna()
     if len(r)>0:
         print(f"  {sym}: mean={r.mean():+.6f} std={r.std():.6f} |mean|/std={abs(r.mean())/r.std():.2f}")
 
-# â”€â”€â”€ 4. Per-Mark analysis â”€â”€â”€
+# ?€?€?€ 4. Per-Mark analysis ?€?€?€
 print("\n=== Per-Mark Wing Residual ===")
 vev_t = trades[trades['symbol'].isin(syms)].copy()
 rc = ['global_ts'] + [f'wr_{s}' for s in syms]
@@ -2584,7 +2584,7 @@ for mk in marks:
             if side=='RICH' and z<-0.5: tag = 'CHEAP'
             print(f"    {sym} {label}({len(ss):3d}x): z={z:+.2f} [{tag}]")
 
-# â”€â”€â”€ 5. Plotly: IV + Wing Fair + Residual + Trade Markers â”€â”€â”€
+# ?€?€?€ 5. Plotly: IV + Wing Fair + Residual + Trade Markers ?€?€?€
 COLORS = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
           '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf']
 name_color = {n: COLORS[i%len(COLORS)] for i, n in enumerate(marks)}
@@ -2764,14 +2764,14 @@ print("Done. Red dotted = +1 std (RICH), Green dotted = -1 std (CHEAP)")
     Done. Red dotted = +1 std (RICH), Green dotted = -1 std (CHEAP)
     
 
-## 1-4. IV Term Structure Signal â€” Log-Moneyness Mean Reversion
+## 1-4. IV Term Structure Signal ??Log-Moneyness Mean Reversion
 
-**Key insight:** IV rises as TTM decreases â†’ log(K/S) clusters near strikes.
+**Key insight:** IV rises as TTM decreases ??log(K/S) clusters near strikes.
 
 $$d_2 = \frac{\ln(S/K) - \frac{1}{2}\sigma^2(T-t)}{\sigma\sqrt{T-t}}$$
 
-As denominator Ïƒâˆš(Tâˆ’t) shrinks â†’ rising IV implies log-moneyness is held constant.  
-**Signal:** Mean-reversion trades when log-moneyness exits p20/p80 band â†’ **~60% P&L improvement**
+As denominator ???T?’t) shrinks ??rising IV implies log-moneyness is held constant.  
+**Signal:** Mean-reversion trades when log-moneyness exits p20/p80 band ??**~60% P&L improvement**
 
 
 ```python
@@ -3156,9 +3156,9 @@ $$dX_t = \kappa(\theta - X_t)\,dt + \sigma\,dW_t$$
 
 | Finding | Value |
 |------|----|
-| Îº | â‰ˆ 0.002 (mean-reversion speed) |
-| Half-life | â‰ˆ 352 timestamps |
-| Î”AIC (vs RW) | â‰ˆ 25 |
+| Îº | ??0.002 (mean-reversion speed) |
+| Half-life | ??352 timestamps |
+| ?AIC (vs RW) | ??25 |
 
 **Conclusion:** Mean reversion confirmed statistically. However, empirical p15/p85 thresholds outperform the OU-theoretical band in live trading.
 
@@ -3186,7 +3186,7 @@ km_thresholds = {
     5500: (+0.04697, +0.04319, +0.05043),
 }
 
-# â”€â”€â”€ Build log-moneyness series â”€â”€â”€
+# ?€?€?€ Build log-moneyness series ?€?€?€
 und = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_ts','mid_price']].rename(columns={'mid_price':'S'}).sort_values('global_ts')
 
 lm_all = und.copy()
@@ -3200,7 +3200,7 @@ for K in STRIKES:
 
 print(f"Log-moneyness series built: {len(lm_all)} rows")
 
-# â”€â”€â”€ OU Fitting via OLS â”€â”€â”€
+# ?€?€?€ OU Fitting via OLS ?€?€?€
 def fit_ou_ols(x):
     x = np.asarray(x, dtype=float)
     x_lag = x[:-1]
@@ -3228,14 +3228,14 @@ for K in STRIKES:
           f"OU:[{p['theta']-2*p['sigma_eq']:+.5f}, {p['theta']+2*p['sigma_eq']:+.5f}]  "
           f"Hard:[{p15:+.5f}, {p85:+.5f}]")
 
-# â”€â”€â”€ Half-life assessment â”€â”€â”€
+# ?€?€?€ Half-life assessment ?€?€?€
 print("\n--- Half-life vs Trading Horizon ---")
 for K in STRIKES:
     hl = ou_params[K]['half_life']
     tag = "Fast (<100ts)" if hl < 100 else "Medium (100-1000ts)" if hl < 1000 else "Slow (>1000ts)"
     print(f"  K={K}: {hl:.1f} ts  => {tag}")
 
-# â”€â”€â”€ Backtest: Fixed vs Rolling vs OU â”€â”€â”€
+# ?€?€?€ Backtest: Fixed vs Rolling vs OU ?€?€?€
 def backtest(lm_arr, K, mode='fixed'):
     _, p15, p85 = km_thresholds[K]
     mid_ref = (p15 + p85) / 2
@@ -3271,7 +3271,7 @@ for K in STRIKES:
         pnl, n, wr = backtest(arr, K, mode)
         print(f"  K={K}  {mode:>8}: pnl={pnl:+.5f}  trades={n:4d}  wr={wr:.1%}")
 
-# â”€â”€â”€ PLOT â”€â”€â”€
+# ?€?€?€ PLOT ?€?€?€
 fig = plt.figure(figsize=(18, 16))
 fig.patch.set_facecolor('#0d1117')
 gs = gridspec.GridSpec(3, 2, hspace=0.5, wspace=0.35)
@@ -3393,7 +3393,7 @@ print("Done")
 
 
     
-![png](TestAnalysis_files/TestAnalysis_22_1.png)
+![png](_analysis_img/TestAnalysis_22_1.png)
     
 
 
@@ -3401,18 +3401,18 @@ print("Done")
     
 
 ---
-## Part 2: Manual Trading â€” Exotic Options Portfolio Optimization
+## Part 2: Manual Trading ??Exotic Options Portfolio Optimization
 
 ### Product Universe 
 
 | Product | Description |
 |------|------|
 | Vanilla Put/Call | 2week /3 week maturity, varying strikes |
-| **Chooser's Option** | After 2 weeks call/put selection â†’ **Sell Position** (Highest Premium) |
+| **Chooser's Option** | After 2 weeks call/put selection ??**Sell Position** (Highest Premium) |
 | Binary Put | Pays a fixed rebate conditional on downside breach at expiration|
 | Knock-Out Put | barrier touching put |
 
-### ðŸ“ Strategy & Optimization Setup
+### ?“ Strategy & Optimization Setup
 
 * **Core Position:** Short the Chooser's Option (to collect the richest premium) and hedge using vanilla/exotic instruments to mitigate downside path probability.
 * **Objective Function:** Minimize **CVaR at 5%** over a 100-path Monte Carlo simulation matrix, matching the competition's exact evaluation structure to penalize severe tail risk.
@@ -3423,8 +3423,8 @@ print("Done")
 | Metric | Value |
 |--------|-------|
 | Mean P&L | 81,209 |
-| CVaR 5% | âˆ’95,974 |
-| Worst 1% | âˆ’115,728 |
+| CVaR 5% | ??5,974 |
+| Worst 1% | ??15,728 |
 | P(profit > 0) | 82.0% |
 
 
@@ -3503,8 +3503,8 @@ def bs_put(S, K, T, sigma):
 def simulate_paths(S0, vol, T_years, num_steps, num_sims):
     """
     [FIX #1] Fixed log_S cumsum accumulation error:
-      Before: cumsum out=log_S[:,1:] then += log(S0) â†’ double-add bug
-      After: cumsum only increments â†’ keep log(S0) in log_S[:,0], then add to slice
+      Before: cumsum out=log_S[:,1:] then += log(S0) ??double-add bug
+      After: cumsum only increments ??keep log(S0) in log_S[:,0], then add to slice
 
     [FIX #4] Re-initialize log_S array on each antithetic iteration
     """
@@ -3530,8 +3530,8 @@ def simulate_paths(S0, vol, T_years, num_steps, num_sims):
 # ============================================================
 def compute_payoffs(paths, instruments):
     """
-    [FIX #2] Underlying: use (terminal price âˆ’ entry price) P&L, not raw terminal price
-             â†’ Aligns P&L calculation consistently with ask/bid entry prices
+    [FIX #2] Underlying: use (terminal price ??entry price) P&L, not raw terminal price
+             ??Aligns P&L calculation consistently with ask/bid entry prices
     [FIX #3] Chooser: replace naive S >= K rule with BS residual-value comparison
     """
     payoffs = {}
@@ -3541,7 +3541,7 @@ def compute_payoffs(paths, instruments):
         itype = inst["type"]
 
         if itype == "underlying":
-            # [FIX #2] Underlying P&L = terminal price âˆ’ entry price
+            # [FIX #2] Underlying P&L = terminal price ??entry price
             payoffs[name] = paths[:, EXPIRY_3W] - paths[:, 0]
 
         elif itype == "call":
@@ -3609,7 +3609,7 @@ def optimize_portfolio(payoffs, instruments, grid_step=2, num_restarts=20):
     Improvements:
       - Vectorized meta-P&L: pre-index as (META_ITERS, GAME_SIMS) matrix
       - Simulated Annealing escape: SA step added to escape local minima
-      - Removed 45â€“50 ATM filter (prevents bias) â†’ use all paths
+      - Removed 45??0 ATM filter (prevents bias) ??use all paths
     """
     names  = list(instruments.keys())
     n_inst = len(names)
@@ -3639,14 +3639,14 @@ def optimize_portfolio(payoffs, instruments, grid_step=2, num_restarts=20):
 
         # Underlying P&L differs by entry side (ask vs bid)
         if inst["type"] == "underlying":
-            # Buy: gain âˆ’ half-spread; Sell: âˆ’gain âˆ’ half-spread
+            # Buy: gain ??half-spread; Sell: ?’gain ??half-spread
             pnl_buy  = raw_payoff - (inst["ask"] - S0)
             pnl_sell = -raw_payoff - (S0 - inst["bid"])
         else:
             pnl_buy  = raw_payoff - inst["ask"]
             pnl_sell = inst["bid"] - raw_payoff
 
-        # [OPT] Vectorize: (total_paths,) â†’ (META_ITERS, GAME_SIMS) â†’ mean â†’ (META_ITERS,)
+        # [OPT] Vectorize: (total_paths,) ??(META_ITERS, GAME_SIMS) ??mean ??(META_ITERS,)
         sampled_buy  = np.mean(pnl_buy[meta_indices],  axis=1)  # (META_ITERS,)
         sampled_sell = np.mean(pnl_sell[meta_indices], axis=1)
 
@@ -3717,7 +3717,7 @@ if __name__ == "__main__":
 
     print("\n[Step 1] Simulating paths...")
     paths   = simulate_paths(S0, ANNUAL_VOL, T_3W_YEARS, TOTAL_STEPS, NUM_PATHS)
-    print(f"  Paths shape : {paths.shape}  (antithetic â†’ {paths.shape[0]} total)")
+    print(f"  Paths shape : {paths.shape}  (antithetic ??{paths.shape[0]} total)")
     print(f"  S0 check    : mean(paths[:,0]) = {np.mean(paths[:,0]):.4f}  (should be ~{S0})")
     print(f"  Terminal S  : mean={np.mean(paths[:,-1]):.4f}, std={np.std(paths[:,-1]):.4f}")
 
@@ -3775,7 +3775,7 @@ if __name__ == "__main__":
             else:        final_path_pnls += abs(vol) * (inst["bid"] - payoffs[name])
 
     # final_path_pnls: sum of per-path, per-unit P&L (before CONTRACT_SIZE scaling)
-    # game = average of 100-path sample â†’ multiply by CONTRACT_SIZE for actual P&L
+    # game = average of 100-path sample ??multiply by CONTRACT_SIZE for actual P&L
     game_idx     = np.random.randint(0, len(paths), size=(10_000, GAME_SIMS))
     game_samples = np.mean(final_path_pnls[game_idx], axis=1) * CONTRACT_SIZE
 
@@ -3794,14 +3794,14 @@ if __name__ == "__main__":
     # ---- Visualization ----
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-    # 1) P&L distribution â€” mean_val/cvar_val/worst1_val match values computed above
+    # 1) P&L distribution ??mean_val/cvar_val/worst1_val match values computed above
     ax = axes[0]
     ax.hist(game_samples, bins=60, color='#2ecc71', edgecolor='#27ae60', alpha=0.7)
     ax.axvline(mean_val,   color='#e74c3c', lw=2, ls='--', label=f"Mean: {mean_val:,.0f}")
     ax.axvline(cvar_val,   color='#9b59b6', lw=2, ls=':',  label=f"CVaR 5%: {cvar_val:,.0f}")
     ax.axvline(worst1_val, color='#f39c12', lw=2, ls=':',  label=f"Worst 1%: {worst1_val:,.0f}")
     ax.axvline(0, color='black', lw=1, alpha=0.4)
-    ax.set_title(f'PnL Distribution â€” Mean={mean_val:,.0f}', fontweight='bold')
+    ax.set_title(f'PnL Distribution ??Mean={mean_val:,.0f}', fontweight='bold')
     ax.set_xlabel('Total PnL (Ã—Contract Size)')
     ax.set_ylabel('Frequency')
     ax.legend(fontsize=9)
@@ -3816,7 +3816,7 @@ if __name__ == "__main__":
     short_names = [n.replace("AETHER_", "") for n in pos_names]
     ax2.barh(short_names, pos_vals, color=colors, edgecolor='gray', linewidth=0.5)
     ax2.axvline(0, color='black', lw=1)
-    ax2.set_title('Optimal Position (+ Buy / â€“ Sell)', fontweight='bold')
+    ax2.set_title('Optimal Position (+ Buy / ??Sell)', fontweight='bold')
     ax2.set_xlabel('Volume')
     ax2.grid(axis='x', alpha=0.2)
 
@@ -3830,7 +3830,7 @@ if __name__ == "__main__":
     ======================================================================
     
     [Step 1] Simulating paths...
-      Paths shape : (200000, 61)  (antithetic â†’ 200000 total)
+      Paths shape : (200000, 61)  (antithetic ??200000 total)
       S0 check    : mean(paths[:,0]) = 50.0000  (should be ~50.0)
       Terminal S  : mean=49.9277, std=33.5323
     
@@ -3875,7 +3875,7 @@ if __name__ == "__main__":
     [Chart saved: pnl_distribution_v2.png]
     
 
-## Portfolio Analysis â€” Payoff & PnL Distribution (Plotly)
+## Portfolio Analysis ??Payoff & PnL Distribution (Plotly)
 
 
 ```python
@@ -3977,7 +3977,7 @@ def compute_payoffs(paths, instruments):
 # 2. Optimal portfolio (values from mc_optimizer.py run)
 # In practice: re-run optimizer; for visualization demo, use cached result.
 # Alternatively, import and call the optimizer function directly.
-# Here we focus on visualization â€” hardcode known optimal vols or run quick optimization.
+# Here we focus on visualization ??hardcode known optimal vols or run quick optimization.
 # ============================================================
 
 # Example optimal solution from the original run (approximate values)
@@ -4036,7 +4036,7 @@ def run_visualization(vols=None):
     )
 
     # 1. Payoff Profile (Scatter)
-    # 10k paths is too many for Plotly â€” sample 5,000
+    # 10k paths is too many for Plotly ??sample 5,000
     sample_idx = np.random.choice(len(terminal_prices), 5000, replace=False)
     fig.add_trace(
         go.Scatter(
@@ -4119,10 +4119,10 @@ if __name__ == "__main__":
 ---
 ## Key Takeaways
 
-1. **Trader ID analysis is a tool for falsification** â€” It is far more useful for rejecting incorrect hypotheses rather than directly discovering a bot's hidden alpha.
-2. **Structural signals live in the math, not just the data** â€” Formally solving the BSM framework under $r=0$ completely decodes and explains the empirical IV term structure.
-3. **OU processes validate structure but do not improve operational thresholds** â€” While mean reversion was statistically confirmed ($\Delta\text{AIC} \approx 25$), data-driven empirical percentiles consistently outperformed the model-derived boundaries in production.
-4. **Optimization objectives shape outcomes as much as strategies do** â€” The tactical choice between 5% CVaR minimization and simple Mean P&L maximization fundamentally dictates the optimal portfolio weights.
+1. **Trader ID analysis is a tool for falsification** ??It is far more useful for rejecting incorrect hypotheses rather than directly discovering a bot's hidden alpha.
+2. **Structural signals live in the math, not just the data** ??Formally solving the BSM framework under $r=0$ completely decodes and explains the empirical IV term structure.
+3. **OU processes validate structure but do not improve operational thresholds** ??While mean reversion was statistically confirmed ($\Delta\text{AIC} \approx 25$), data-driven empirical percentiles consistently outperformed the model-derived boundaries in production.
+4. **Optimization objectives shape outcomes as much as strategies do** ??The tactical choice between 5% CVaR minimization and simple Mean P&L maximization fundamentally dictates the optimal portfolio weights.
 
 
 

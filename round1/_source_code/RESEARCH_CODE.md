@@ -5,7 +5,7 @@
 
 ## Overview
 
-Round 1 was the foundation round — no options, no exotic structures. The core challenge was fair value construction: without a reliable anchor, any quoting strategy is noise.
+Round 1 was the foundation round ??no options, no exotic structures. The core challenge was fair value construction: without a reliable anchor, any quoting strategy is noise.
 
 Key findings:
 - **PEPPER** required a dynamic, trend-adjusted fair value anchor (linear regression on price drift).
@@ -14,9 +14,9 @@ Key findings:
 
 
 ---
-## Section 1: INTARIAN_PEPPER_ROOT — Initial Exploration
+## Section 1: INTARIAN_PEPPER_ROOT ??Initial Exploration
 
-Cells 00–06: Load price and trade data across all three days. Visualize mid-price distribution and spread dynamics per day.
+Cells 00??6: Load price and trade data across all three days. Visualize mid-price distribution and spread dynamics per day.
 
 > **Finding:** PEPPER exhibits a clear persistent linear upward price trend across all three days. Static fair value anchors (rolling mid, VWAP) would be systematically stale.
 
@@ -260,7 +260,7 @@ for asset in assets:
     asset_trades = trades[trades['symbol'] == asset].copy()
     asset_trades = asset_trades[asset_trades['price'] > 0] # Remove zero-price fills (likely spurious)
     
-    # [Fair value & deviation] — use t at actual trade timestamp
+    # [Fair value & deviation] ??use t at actual trade timestamp
     asset_trades['fair_value'] = asset_trades['global_timestamp'].apply(lambda t: get_fair_value(asset, t))
     asset_trades['deviation'] = asset_trades['price'] - asset_trades['fair_value']
     
@@ -351,7 +351,7 @@ for col in ['bid_price_1', 'ask_price_1', 'mid_price']:
 # 3. Visualization
 fig = go.Figure()
 
-# Ask Price L1 (offer side — typically above mid)
+# Ask Price L1 (offer side ??typically above mid)
 fig.add_trace(go.Scatter(
     x=osmium_data['global_timestamp'],
     y=osmium_data['ask_price_1'],
@@ -369,7 +369,7 @@ fig.add_trace(go.Scatter(
     line=dict(color='rgba(255, 255, 255, 0.9)', width=1.5)
 ))
 
-# Bid Price L1 (bid side — typically below mid)
+# Bid Price L1 (bid side ??typically below mid)
 fig.add_trace(go.Scatter(
     x=osmium_data['global_timestamp'],
     y=osmium_data['bid_price_1'],
@@ -432,7 +432,7 @@ group_labels = ['Trade Deviation (Price - 10000)']
 fig = ff.create_distplot(
     hist_data, 
     group_labels, 
-    bin_size=1, # OSMIUM prices are integer-valued — bin size = 1
+    bin_size=1, # OSMIUM prices are integer-valued ??bin size = 1
     show_hist=True,
     show_rug=False,
     colors=['#00FF7F']
@@ -485,8 +485,8 @@ osmium_trades = osmium_trades[osmium_trades['price'] > 0]
 # Compute price deviation
 osmium_trades['deviation'] = osmium_trades['price'] - base_mid
 
-# Buy: fill price > 10,000 (typically executed at ask 10002–10005)
-# Sell: fill price < 10,000 (typically executed at bid 9995–9998)
+# Buy: fill price > 10,000 (typically executed at ask 10002??0005)
+# Sell: fill price < 10,000 (typically executed at bid 9995??998)
 buy_trades = osmium_trades[osmium_trades['deviation'] > 0]['deviation'].tolist()
 sell_trades = osmium_trades[osmium_trades['deviation'] < 0]['deviation'].tolist()
 
@@ -609,16 +609,16 @@ else:
 
 
 ---
-## Section 2: PEPPER — Trend-Following Fair Value
+## Section 2: PEPPER ??Trend-Following Fair Value
 
-Cells 07–14: Detailed interval-level analysis of PEPPER mid-price. Trade-type overlays (active buy/sell, passive fills) confirm the trend direction.
+Cells 07??4: Detailed interval-level analysis of PEPPER mid-price. Trade-type overlays (active buy/sell, passive fills) confirm the trend direction.
 
 **Fair value construction:**
 ```
 FV_t = α·t + β
 ```
 where α (slope) and β (intercept) are estimated via linear regression on historical mid-prices.
-Quotes are centered on FV_t — not on the instantaneous mid — to avoid adverse selection on a drifting asset.
+Quotes are centered on FV_t ??not on the instantaneous mid ??to avoid adverse selection on a drifting asset.
 
 
 
@@ -648,7 +648,7 @@ df['micro_price'] = (df['bid_price_1'] * df['ask_volume_1'] +
 # OBI (Order Book Imbalance): (bid_size - ask_size) / (bid_size + ask_size), range [-1, 1]
 df['obi'] = (df['bid_volume_1'] - df['ask_volume_1']) / (df['bid_volume_1'] + df['ask_volume_1'])
 
-# Exponential moving average for 'atmosphere' — slow-moving trend
+# Exponential moving average for 'atmosphere' ??slow-moving trend
 df['obi_ema'] = df['obi'].ewm(span=100).mean()
 df['intent_drift'] = (df['micro_price'] - df['mid_price']).rolling(50).mean()
 
@@ -690,7 +690,7 @@ plt.show()
 
 
     
-![png](round1_analysis_files/round1_analysis_10_0.png)
+![png](_analysis_img/round1_analysis_10_0.png)
     
 
 
@@ -712,7 +712,7 @@ def plot_interpolated_pepper_days():
             df_day = pd.read_csv(filename, sep=';')
             pepper = df_day[df_day['product'] == 'INTARIAN_PEPPER_ROOT'].copy()
             
-            # Generate full timestamp grid (0–999,900) and interpolate
+            # Generate full timestamp grid (0??99,900) and interpolate
             all_timestamps = np.arange(0, 1000000, 100)
             full_index = pd.DataFrame({'timestamp': all_timestamps})
             pepper = pd.merge(full_index, pepper, on='timestamp', how='left')
@@ -748,7 +748,7 @@ plot_interpolated_pepper_days()
 
 
     
-![png](round1_analysis_files/round1_analysis_11_0.png)
+![png](_analysis_img/round1_analysis_11_0.png)
     
 
 
@@ -804,7 +804,7 @@ plot_pepper_cleaned()
 
 
     
-![png](round1_analysis_files/round1_analysis_12_0.png)
+![png](_analysis_img/round1_analysis_12_0.png)
     
 
 
@@ -862,7 +862,7 @@ plot_pepper_in_intervals(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_13_0.png)
+![png](_analysis_img/round1_analysis_13_0.png)
     
 
 
@@ -917,7 +917,7 @@ plot_pepper_ultra_detailed(day=0, num_intervals=50)
 
 
     
-![png](round1_analysis_files/round1_analysis_14_0.png)
+![png](_analysis_img/round1_analysis_14_0.png)
     
 
 
@@ -985,7 +985,7 @@ plot_pepper_full_detail(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_15_0.png)
+![png](_analysis_img/round1_analysis_15_0.png)
     
 
 
@@ -1016,7 +1016,7 @@ def plot_pepper_trade_types(day=0, num_intervals=50):
                                         p_pepper[['timestamp', 'bid_price_1', 'ask_price_1']], 
                                         on='timestamp')
         
-        # Classify fill: near ask → Buy (red); near bid → Sell (blue)
+        # Classify fill: near ask ??Buy (red); near bid ??Sell (blue)
         def classify_trade(row):
             if row['price'] >= row['ask_price_1']: return 'red'  # Buy
             if row['price'] <= row['bid_price_1']: return 'blue' # Sell
@@ -1071,7 +1071,7 @@ plot_pepper_trade_types(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_16_0.png)
+![png](_analysis_img/round1_analysis_16_0.png)
     
 
 
@@ -1159,17 +1159,17 @@ plot_pepper_deep_book(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_17_0.png)
+![png](_analysis_img/round1_analysis_17_0.png)
     
 
 
 ---
-## Section 3: ASH_COATED_OSMIUM — Mean-Reversion Market Making
+## Section 3: ASH_COATED_OSMIUM ??Mean-Reversion Market Making
 
-Cells 15–18: Full multi-day analysis for OSMIUM. Price oscillates around 10,000 in-sample but drifts downward out-of-sample.
+Cells 15??8: Full multi-day analysis for OSMIUM. Price oscillates around 10,000 in-sample but drifts downward out-of-sample.
 
 **Post-mortem:** The instantaneous mid-price anchor chased the drift, producing a sequence of buys at falling prices.  
-**What would have worked better:** A slower anchor — VWAP or a longer rolling mid — would have been less reactive to short-term drift.
+**What would have worked better:** A slower anchor ??VWAP or a longer rolling mid ??would have been less reactive to short-term drift.
 
 
 
@@ -1253,7 +1253,7 @@ plot_asset_full_analysis(product_name='ASH_COATED_OSMIUM', day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_19_0.png)
+![png](_analysis_img/round1_analysis_19_0.png)
     
 
 
@@ -1313,7 +1313,7 @@ plot_pepper_spread_timeseries(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_20_0.png)
+![png](_analysis_img/round1_analysis_20_0.png)
     
 
 
@@ -1397,7 +1397,7 @@ analyze_pepper_spread_trend()
 
 
     
-![png](round1_analysis_files/round1_analysis_21_0.png)
+![png](_analysis_img/round1_analysis_21_0.png)
     
 
 
@@ -1408,7 +1408,7 @@ analyze_pepper_spread_trend()
       -1 13.012257 1.056795
        0 14.128715 0.928454
     
-    [!] 결과: 일차별 평균 스프레드가 꾸준히 '증가'하고 있습니다.
+    [!] 결과: ?�차�??�균 ?�프?�드가 꾸�???'증�?'?�고 ?�습?�다.
     
 
 
@@ -1476,7 +1476,7 @@ analyze_asset_spread_trend('ASH_COATED_OSMIUM')
 
 
     
-![png](round1_analysis_files/round1_analysis_22_0.png)
+![png](_analysis_img/round1_analysis_22_0.png)
     
 
 
@@ -1491,7 +1491,7 @@ analyze_asset_spread_trend('ASH_COATED_OSMIUM')
 ---
 ## Section 4: Spread Analysis & Jump Detection
 
-Cells 16–19: Time-series of bid-ask spread per asset. Spread trend analysis across days. True price jump detection (distinguishing fill-driven ticks from genuine price moves).
+Cells 16??9: Time-series of bid-ask spread per asset. Spread trend analysis across days. True price jump detection (distinguishing fill-driven ticks from genuine price moves).
 
 
 
@@ -1510,7 +1510,7 @@ def analyze_pepper_true_jumps(day=0):
         pepper.loc[pepper['mid_price'] <= 0, 'mid_price'] = np.nan
         pepper['mid_price'] = pepper['mid_price'].ffill()
         
-        # 2. Fill all timestamp gaps (0–999,900) using back-fill
+        # 2. Fill all timestamp gaps (0??99,900) using back-fill
         all_ts = np.arange(0, 1000000, 100)
         full_df = pd.DataFrame({'timestamp': all_ts})
         pepper = pd.merge(full_df, pepper, on='timestamp', how='left')
@@ -1545,10 +1545,10 @@ analyze_pepper_true_jumps(day=0)
 ```
 
     --- Pepper Price Jump Analysis (Day 0, Cleaned Zeroes) ---
-    최대 점프 폭: 18.0
-    최소 점프 폭: 0.5
+    최�? ?�프 ?? 18.0
+    최소 ?�프 ?? 0.5
     
-    [상위 10개 점프 지점]
+    [?�위 10�??�프 지??
      timestamp  price_diff  mid_price
         971500        18.0    12982.0
         565000        17.0    12555.0
@@ -1565,13 +1565,13 @@ analyze_pepper_true_jumps(day=0)
 ---
 ## Section 5: Mid-Price Zoomed Analysis & Toxic Flow Screening
 
-Cells 20–27: Progressive refinement of mid-price visualization across 30–100 intervals. Tests whether post-trade price movement is directional (toxic flow indicator).
+Cells 20??7: Progressive refinement of mid-price visualization across 30??00 intervals. Tests whether post-trade price movement is directional (toxic flow indicator).
 
 **Toxic flow test:**  
-For each trade, measure the price distribution over the subsequent 1–15 ticks.  
-**Finding:** Under normal spread conditions, post-trade distributions showed no consistent directional bias — flow was not toxic in the conventional sense. However, trades placed during spread-break windows (bid ≥ ask) showed systematic adverse outcomes, consistent with toxic counterparties targeting anomalous spread windows.
+For each trade, measure the price distribution over the subsequent 1??5 ticks.  
+**Finding:** Under normal spread conditions, post-trade distributions showed no consistent directional bias ??flow was not toxic in the conventional sense. However, trades placed during spread-break windows (bid ??ask) showed systematic adverse outcomes, consistent with toxic counterparties targeting anomalous spread windows.
 
-> **Design observation:** The absence of FIFO queue priority creates a potential spread-break arbitrage. The competition blocked this through counterparty design — not market structure.
+> **Design observation:** The absence of FIFO queue priority creates a potential spread-break arbitrage. The competition blocked this through counterparty design ??not market structure.
 
 
 
@@ -1625,7 +1625,7 @@ plot_pepper_mid_30_intervals(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_26_0.png)
+![png](_analysis_img/round1_analysis_26_0.png)
     
 
 
@@ -1672,13 +1672,13 @@ plot_day_0_mid()
 
 
     
-![png](round1_analysis_files/round1_analysis_27_0.png)
+![png](_analysis_img/round1_analysis_27_0.png)
     
 
 
-    L3 시작 가격: 11998.5
-    L3 종료 가격: 13000.0
-    L3 평균 가격: 12500.17
+    L3 ?�작 가�? 11998.5
+    L3 종료 가�? 13000.0
+    L3 ?�균 가�? 12500.17
     
 
 
@@ -1730,7 +1730,7 @@ plot_l3_mid_30_intervals(num_intervals=30)
 
 
     
-![png](round1_analysis_files/round1_analysis_28_0.png)
+![png](_analysis_img/round1_analysis_28_0.png)
     
 
 
@@ -1791,7 +1791,7 @@ plot_pepper_mid_l3_30_intervals(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_29_0.png)
+![png](_analysis_img/round1_analysis_29_0.png)
     
 
 
@@ -1809,7 +1809,7 @@ def plot_pepper_mid_l3_robust(day=0, num_intervals=30):
         pepper = df[df['product'] == 'INTARIAN_PEPPER_ROOT'].copy()
         
         # 1. Compute Level 3 prices (cast to numeric, extract valid values)
-        # Exclude zeros and NaN — keep only rows with valid L3 data.
+        # Exclude zeros and NaN ??keep only rows with valid L3 data.
         pepper['bid_price_3'] = pd.to_numeric(pepper['bid_price_3'], errors='coerce')
         pepper['ask_price_3'] = pd.to_numeric(pepper['ask_price_3'], errors='coerce')
         
@@ -1818,7 +1818,7 @@ def plot_pepper_mid_l3_robust(day=0, num_intervals=30):
         pepper_l3 = pepper_l3[(pepper_l3['bid_price_3'] > 0) & (pepper_l3['ask_price_3'] > 0)]
         
         if pepper_l3.empty:
-            print(f"⚠️ Warning: {filename} has no Level 3 quote data for PEPPER!")
+            print(f"?�️ Warning: {filename} has no Level 3 quote data for PEPPER!")
             # Fall back to Level 1 data
             print("Showing Level 1 mid price instead.")
             pepper_l3 = pepper[(pepper['mid_price'] > 0)].copy()
@@ -1860,13 +1860,13 @@ plot_pepper_mid_l3_robust(day=0)
 
 ```
 
-    ⚠️ 경고: prices_round_1_day_0.csv 파일에 Pepper의 Level 3 호가 데이터가 하나도 없습니다!
-    대신 Level 1 중간가(Mid Price)를 확인합니다.
+    ?�️ 경고: prices_round_1_day_0.csv ?�일??Pepper??Level 3 ?��? ?�이?��? ?�나???�습?�다!
+    ?�??Level 1 중간가(Mid Price)�??�인?�니??
     
 
 
     
-![png](round1_analysis_files/round1_analysis_30_1.png)
+![png](_analysis_img/round1_analysis_30_1.png)
     
 
 
@@ -1891,7 +1891,7 @@ def plot_pepper_mid_l2_30_intervals(day=0, num_intervals=30):
         pepper_l2 = pepper_l2[(pepper_l2['bid_price_2'] > 0) & (pepper_l2['ask_price_2'] > 0)]
         
         if pepper_l2.empty:
-            print(f"⚠️ {filename}has insufficient Level 2 data. Falling back to Level 1 mid price.")
+            print(f"?�️ {filename}has insufficient Level 2 data. Falling back to Level 1 mid price.")
             pepper_l2 = pepper[pepper['mid_price'] > 0].copy()
             pepper_l2['target_price'] = pepper_l2['mid_price']
             tag = "Level 1 Mid"
@@ -1934,7 +1934,7 @@ plot_pepper_mid_l2_30_intervals(day=0)
 
 
     
-![png](round1_analysis_files/round1_analysis_31_0.png)
+![png](_analysis_img/round1_analysis_31_0.png)
     
 
 
@@ -1999,7 +1999,7 @@ plot_pepper_mid_l2_ultra_detailed(day=0, num_intervals=100)
 
 
     
-![png](round1_analysis_files/round1_analysis_32_0.png)
+![png](_analysis_img/round1_analysis_32_0.png)
     
 
 
@@ -2049,12 +2049,12 @@ def plot_asset_3day_detailed(product_name='ASH_COATED_OSMIUM', num_intervals_per
                 
                 ax = axes[interval_idx]
                 if not p_seg.empty:
-                    # Ask quotes (L1–L3)
+                    # Ask quotes (L1?�L3)
                     ax.step(p_seg['timestamp'], p_seg['ask_price_3'], color='red', alpha=0.1, where='post')
                     ax.step(p_seg['timestamp'], p_seg['ask_price_2'], color='red', alpha=0.2, where='post')
                     ax.step(p_seg['timestamp'], p_seg['ask_price_1'], color='red', alpha=0.5, where='post', linewidth=1.2, label='Ask L1')
                     
-                    # Bid quotes (L1–L3)
+                    # Bid quotes (L1?�L3)
                     ax.step(p_seg['timestamp'], p_seg['bid_price_1'], color='green', alpha=0.5, where='post', linewidth=1.2, label='Bid L1')
                     ax.step(p_seg['timestamp'], p_seg['bid_price_2'], color='green', alpha=0.2, where='post')
                     ax.step(p_seg['timestamp'], p_seg['bid_price_3'], color='green', alpha=0.1, where='post')
@@ -2092,6 +2092,6 @@ plot_asset_3day_detailed(product_name='ASH_COATED_OSMIUM', num_intervals_per_day
 
 
     
-![png](round1_analysis_files/round1_analysis_33_0.png)
+![png](_analysis_img/round1_analysis_33_0.png)
     
 

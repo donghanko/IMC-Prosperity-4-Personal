@@ -2,7 +2,7 @@
 
 ---
 
-# Round 2: PEPPER & OSMIUM — Continued Analysis with MAF Context
+# Round 2: PEPPER & OSMIUM ??Continued Analysis with MAF Context
 
 > **Context:** Same two assets as Round 1, but now with 25% additional quote access granted via the MAF bid.  
 > **Goal:** Re-examine OBI predictive power and spread dynamics under expanded access conditions.
@@ -255,7 +255,7 @@ for asset in assets:
     asset_trades = trades[trades['symbol'] == asset].copy()
     asset_trades = asset_trades[asset_trades['price'] > 0] # Remove zero-price fills (likely spurious)
     
-    # [Fair value & deviation] — use t at actual trade timestamp
+    # [Fair value & deviation] ??use t at actual trade timestamp
     asset_trades['fair_value'] = asset_trades['global_timestamp'].apply(lambda t: get_fair_value(asset, t))
     asset_trades['deviation'] = asset_trades['price'] - asset_trades['fair_value']
     
@@ -313,7 +313,7 @@ for asset in assets:
 
 
 ---
-## Section 2: Trade Data — Distribution & Spread
+## Section 2: Trade Data ??Distribution & Spread
 
 Visualize trade price distributions (histogram, distribution factory). Spread time series per day.
 
@@ -347,7 +347,7 @@ for col in ['bid_price_1', 'ask_price_1', 'mid_price']:
 # 3. Visualization
 fig = go.Figure()
 
-# Ask Price L1 (offer side — typically above mid)
+# Ask Price L1 (offer side ??typically above mid)
 fig.add_trace(go.Scatter(
     x=osmium_data['global_timestamp'],
     y=osmium_data['ask_price_1'],
@@ -365,7 +365,7 @@ fig.add_trace(go.Scatter(
     line=dict(color='rgba(255, 255, 255, 0.9)', width=1.5)
 ))
 
-# Bid Price L1 (bid side — typically below mid)
+# Bid Price L1 (bid side ??typically below mid)
 fig.add_trace(go.Scatter(
     x=osmium_data['global_timestamp'],
     y=osmium_data['bid_price_1'],
@@ -424,7 +424,7 @@ group_labels = ['Trade Deviation (Price - 10000)']
 fig = ff.create_distplot(
     hist_data, 
     group_labels, 
-    bin_size=1, # OSMIUM prices are integer-valued — bin size = 1
+    bin_size=1, # OSMIUM prices are integer-valued ??bin size = 1
     show_hist=True,
     show_rug=False,
     colors=['#00FF7F']
@@ -528,7 +528,7 @@ else:
 
 ```
 
-    분석할 충분한 매수/매도 거래 데이터가 없습니다.
+    분석??충분??매수/매도 거래 ?�이?��? ?�습?�다.
     
 
 ---
@@ -565,7 +565,7 @@ df['micro_price'] = (df['bid_price_1'] * df['ask_volume_1'] +
 # OBI (Order Book Imbalance): (bid_size - ask_size) / (bid_size + ask_size), range [-1, 1]
 df['obi'] = (df['bid_volume_1'] - df['ask_volume_1']) / (df['bid_volume_1'] + df['ask_volume_1'])
 
-# Exponential moving average for 'atmosphere' — slow-moving trend
+# Exponential moving average for 'atmosphere' ??slow-moving trend
 df['obi_ema'] = df['obi'].ewm(span=100).mean()
 df['intent_drift'] = (df['micro_price'] - df['mid_price']).rolling(50).mean()
 
@@ -607,7 +607,7 @@ plt.show()
 
 
     
-![png](round2_analysis_files/round2_analysis_13_0.png)
+![png](_analysis_img/round2_analysis_13_0.png)
     
 
 
@@ -665,7 +665,7 @@ plot_pepper_in_intervals(day=0)
 
 
     
-![png](round2_analysis_files/round2_analysis_14_0.png)
+![png](_analysis_img/round2_analysis_14_0.png)
     
 
 
@@ -696,7 +696,7 @@ def plot_pepper_trade_types(day=0, num_intervals=50):
                                         p_pepper[['timestamp', 'bid_price_1', 'ask_price_1']], 
                                         on='timestamp')
         
-        # Classify fill: near ask → Buy (red); near bid → Sell (blue)
+        # Classify fill: near ask ??Buy (red); near bid ??Sell (blue)
         def classify_trade(row):
             if row['price'] >= row['ask_price_1']: return 'red'  # Buy
             if row['price'] <= row['bid_price_1']: return 'blue' # Sell
@@ -751,7 +751,7 @@ plot_pepper_trade_types(day=0)
 
 
     
-![png](round2_analysis_files/round2_analysis_15_0.png)
+![png](_analysis_img/round2_analysis_15_0.png)
     
 
 
@@ -815,7 +815,7 @@ plot_pepper_in_intervals(day=0)
 
 
     
-![png](round2_analysis_files/round2_analysis_17_0.png)
+![png](_analysis_img/round2_analysis_17_0.png)
     
 
 
@@ -884,7 +884,7 @@ def plot_pepper_fix_scale(day=0, num_intervals=30):
                 # 10,000 reference line
                 axes[p_idx].axhline(y=10000, color='red', linestyle='--', linewidth=1, alpha=0.4)
                 
-                # ⭐ Auto-optimize Y-axis range (± 15 around interval mid price)
+                # �?Auto-optimize Y-axis range (± 15 around interval mid price)
                 curr_mid = p_sub['mid_price'].median()
                 axes[p_idx].set_ylim(curr_mid - 15, curr_mid + 15) # Fix Y-axis to interval price range
 
@@ -926,7 +926,7 @@ plot_pepper_fix_scale(day=0)
 
 
     
-![png](round2_analysis_files/round2_analysis_18_0.png)
+![png](_analysis_img/round2_analysis_18_0.png)
     
 
 
@@ -990,7 +990,7 @@ def plot_asset_full_analysis_refined(product_name='ASH_COATED_OSMIUM', day=0, nu
                 ax_price.step(p_seg['timestamp'], p_seg['bid_price_1'], color='#aaffaa', alpha=0.4, where='post')
                 
                 if not t_seg.empty:
-                    # ★ Mark mid price at fill timestamps with black dots
+                    # ??Mark mid price at fill timestamps with black dots
                     ax_price.scatter(t_seg['timestamp'], t_seg['mid_price'], color='black', s=15, zorder=15, label='Mid at Trade')
                     
                     # Fill price markers (triangles)
@@ -1032,18 +1032,18 @@ plot_asset_full_analysis_refined(product_name='ASH_COATED_OSMIUM', day=0, num_in
 
 
     
-![png](round2_analysis_files/round2_analysis_19_0.png)
+![png](_analysis_img/round2_analysis_19_0.png)
     
 
 
 ---
 ## Section 4: OBI Signal Testing
 
-Order Book Imbalance (OBI) at levels 1–3 is computed and tested for forward predictive power.
+Order Book Imbalance (OBI) at levels 1?? is computed and tested for forward predictive power.
 
 **Test setup:**
 - Horizon: 1 to 20 ticks ahead
-- OBI definition: (bid_size_L1 − ask_size_L1) / (bid_size_L1 + ask_size_L1)
+- OBI definition: (bid_size_L1 ??ask_size_L1) / (bid_size_L1 + ask_size_L1)
 - Metric: Pearson correlation of OBI_t with mid-price return at t+horizon
 
 > **Finding:** OBI had weak forward predictive power (correlation < 0.05 at all horizons tested). The signal did not clear the threshold for deployment.
@@ -1125,7 +1125,7 @@ def debug_imbalance_signal(
         print("Filtered rows:", len(df))
 
         if len(df) == 0:
-            print("❌ No data after filtering")
+            print("??No data after filtering")
             return
 
         df = df.sort_values('timestamp')
@@ -1152,7 +1152,7 @@ def debug_imbalance_signal(
         print("Using ask cols:", ask_cols)
 
         if len(bid_cols) == 0:
-            print("❌ No volume columns found")
+            print("??No volume columns found")
             return
 
         df['bid_vol_total'] = df[bid_cols].sum(axis=1)
@@ -1177,7 +1177,7 @@ def debug_imbalance_signal(
         # -------------------------
 
         if horizon >= len(df):
-            print("⚠ Horizon too large → reducing")
+            print("??Horizon too large ??reducing")
             horizon = len(df) // 5
 
         df['future_mid'] = df['mid_price'].shift(-horizon)
@@ -1194,7 +1194,7 @@ def debug_imbalance_signal(
         print("Rows after dropna:", len(df))
 
         if len(df) == 0:
-            print("❌ No rows left after dropna")
+            print("??No rows left after dropna")
             return
 
         # -------------------------
@@ -1292,7 +1292,7 @@ debug_imbalance_signal(
     Using ask cols: ['ask_volume_1', 'ask_volume_2', 'ask_volume_3']
     Imbalance std: 0.3745364498120105
     Rows after dropna: 0
-    ❌ No rows left after dropna
+    ??No rows left after dropna
     
 
 
@@ -1313,13 +1313,13 @@ def full_imbalance_signal_analysis(
     try:
         prices = pd.read_csv(price_file, sep=';', low_memory=False)
     except FileNotFoundError:
-        print(f"❌ File not found: {price_file}")
+        print(f"??File not found: {price_file}")
         return
 
     # 1. Filter and sort
     df = prices[(prices['product'] == product_name) & (prices['mid_price'] > 0)].copy()
     if len(df) == 0:
-        print("❌ No data found for this product.")
+        print("??No data found for this product.")
         return
     df = df.sort_values('timestamp')
 
@@ -1373,77 +1373,77 @@ if __name__ == "__main__":
     full_imbalance_signal_analysis(
         product_name='ASH_COATED_OSMIUM',
         day=0,
-        horizons=list(range(1, 11)), # 1–10 tick horizons
+        horizons=list(range(1, 11)), # 1??0 tick horizons
         levels=3
     )
 ```
 
-    --- 분석 시작: ASH_COATED_OSMIUM (Day 0) ---
+    --- 분석 ?�작: ASH_COATED_OSMIUM (Day 0) ---
     
 
 
     
-![png](round2_analysis_files/round2_analysis_23_1.png)
-    
-
-
-
-    
-![png](round2_analysis_files/round2_analysis_23_2.png)
+![png](_analysis_img/round2_analysis_23_1.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_3.png)
+![png](_analysis_img/round2_analysis_23_2.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_4.png)
+![png](_analysis_img/round2_analysis_23_3.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_5.png)
+![png](_analysis_img/round2_analysis_23_4.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_6.png)
+![png](_analysis_img/round2_analysis_23_5.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_7.png)
+![png](_analysis_img/round2_analysis_23_6.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_8.png)
+![png](_analysis_img/round2_analysis_23_7.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_9.png)
+![png](_analysis_img/round2_analysis_23_8.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_10.png)
+![png](_analysis_img/round2_analysis_23_9.png)
     
 
 
 
     
-![png](round2_analysis_files/round2_analysis_23_11.png)
+![png](_analysis_img/round2_analysis_23_10.png)
+    
+
+
+
+    
+![png](_analysis_img/round2_analysis_23_11.png)
     
 
 
@@ -1524,7 +1524,7 @@ def plot_pepper_fix_scale(day=0, num_intervals=30):
                 if not m_16.empty:
                     axes[p_idx].plot(m_16['timestamp'], m_16['microprice'], color="blue", 
                                      linestyle='-', markersize=6,  label='Spread 16 MP')
-                # ⭐ Microprice visualization fix: added '*' marker points
+                # �?Microprice visualization fix: added '*' marker points
                 axes[p_idx].plot(p_sub['timestamp'], p_sub['microprice'], color="#3498db", alpha=0.7, 
                                   marker='*', markersize=4, label='Microprice')
                 if not t_sub.empty:
@@ -1586,14 +1586,14 @@ plot_pepper_fix_scale(day=0)
 
     
     --- ASH_COATED_OSMIUM Analysis ---
-    전체 체결 건수: 450
-    체결 직전 스프레드가 16이었던 건수: 284
+    ?�체 체결 건수: 450
+    체결 직전 ?�프?�드가 16?�었??건수: 284
     비율: 63.11%
     
 
 
     
-![png](round2_analysis_files/round2_analysis_24_1.png)
+![png](_analysis_img/round2_analysis_24_1.png)
     
 
 
@@ -1609,7 +1609,7 @@ plot_pepper_fix_scale(day=0)
 
 # Round 2: MAF Auction Bid Optimization
 
-> **Problem:** All-or-nothing auction — bid in the top 50% of all participants to gain 25% additional quote access.  
+> **Problem:** All-or-nothing auction ??bid in the top 50% of all participants to gain 25% additional quote access.  
 > **Access value:** ~8,000 XIRECS (estimated from gap between official backtester and full-quote-flow custom backtester).
 
 ## Overview
@@ -1620,18 +1620,18 @@ $$
 \mathbb{E}[\text{Profit}(b)] = P(\text{win} \mid b) \times (V - b)
 $$
 
-where V ≈ 8,000 and P(win | b) = CDF of the modeled bid distribution at b.
+where V ??8,000 and P(win | b) = CDF of the modeled bid distribution at b.
 
 **Bid distribution model:** Beta(α=2, β=5) on [0, 9,000]  
 - Upper bound anchored to Round 1 top performer P&L as proxy for maximum rational bid  
 - Right-skewed: most participants bid conservatively (loss aversion)
 
 **Optimal bid:** ~3,580 XIRECS (maximizes expected profit)  
-**Result:** Bid accepted — market access granted.
+**Result:** Bid accepted ??market access granted.
 
 
 ---
-## Section 1: Beta Distribution — Bid Density & CDF
+## Section 1: Beta Distribution ??Bid Density & CDF
 
 Visualize the Beta(2, 5) distribution scaled to [0, 9,000].  
 This represents the prior belief about where competitors' bids will land.
@@ -1790,7 +1790,7 @@ fig.add_trace(
 fig.add_vline(
     x=best_bid,
     line_dash="dash",
-    annotation_text=f"Optimal ≈ {int(best_bid)}"
+    annotation_text=f"Optimal ??{int(best_bid)}"
 )
 
 # your bid
@@ -1949,7 +1949,7 @@ print("Loss ratio:", loss_ratio)
 ## Section 3: Marginal Cost Analysis
 
 At each bid level, compute the cost per 1% additional win probability.  
-The inflection point — where marginal cost accelerates — marks the efficient frontier.  
+The inflection point ??where marginal cost accelerates ??marks the efficient frontier.  
 This validates that the ~3,580 optimal bid sits just below where overbidding becomes inefficient.
 
 
@@ -2295,7 +2295,7 @@ fig2.show()
 
 > **Budget:** 50,000 XIRECS  
 > **Pillars:** Research (logarithmic) · Scale (linear) · Speed (rank-based)  
-> **Core problem:** Speed payoff depends on the field's allocation distribution — modeled as Beta(α, β).
+> **Core problem:** Speed payoff depends on the field's allocation distribution ??modeled as Beta(α, β).
 
 ## Overview
 
@@ -2305,7 +2305,7 @@ Speed was rank-based: its payoff depended entirely on competitors' allocations, 
 **Approach:**
 1. Fix Speed allocation z, optimize Research/Scale split for the remaining budget
 2. Model Speed distribution as Beta(α, β); compute expected Speed multiplier via numerical integration
-3. Penalize sensitivity to (α, β) misspecification in the objective — risk-adjusted optimization
+3. Penalize sensitivity to (α, β) misspecification in the objective ??risk-adjusted optimization
 
 **Final allocation:** Research 16% (8,000) · Scale 50% (25,000) · Speed 34% (17,000)  
 **Manual P&L:** 183,999 XIRECS
@@ -2489,21 +2489,21 @@ final_pnl = ab_val * C_score
 
 print("----- ROBUST RESULT -----")
 
-print(f"A ≈ {opt_x:.2f}%")
-print(f"B ≈ {opt_y:.2f}%")
-print(f"C ≈ {opt_z:.2f}%")
+print(f"A ??{opt_x:.2f}%")
+print(f"B ??{opt_y:.2f}%")
+print(f"C ??{opt_z:.2f}%")
 
-print(f"C Score ≈ {C_score:.4f}")
+print(f"C Score ??{C_score:.4f}")
 
-print(f"Total PnL ≈ {final_pnl - 50000:.2f}")
+print(f"Total PnL ??{final_pnl - 50000:.2f}")
 ```
 
     ----- ROBUST RESULT -----
-    A ≈ 16.97%
-    B ≈ 51.91%
-    C ≈ 31.12%
-    C Score ≈ 0.6326
-    Total PnL ≈ 237738.24
+    A ??16.97%
+    B ??51.91%
+    C ??31.12%
+    C Score ??0.6326
+    Total PnL ??237738.24
     
 
 
@@ -2521,7 +2521,7 @@ def get_max_ab(z):
     remaining = 100 - z
     if remaining <= 0: return 0, 0, 0
     
-    # Find x split to maximize A×B (y = remaining − x)
+    # Find x split to maximize A×B (y = remaining ??x)
     def objective_ab(x):
         y = remaining - x
         A = 200000 * np.log(1 + x) / np.log(101)
@@ -2590,9 +2590,9 @@ fig.update_layout(height=800, title=f"<b>Final Strategy Analysis (Fixed C={opt_z
 fig.show()
 ```
 
-    --- 정교화된 최적화 결과 ---
+    --- ?�교?�된 최적??결과 ---
     A: 15.69%, B: 46.98%, C: 37.32%
-    PnL: 238032.78 | Threshold: 상위 22.76%
+    PnL: 238032.78 | Threshold: ?�위 22.76%
     
 
 
@@ -2602,9 +2602,9 @@ fig.show()
 
 Speed multiplier is rank-based: modeled by fitting a Beta(α, β) distribution to competitors' Speed allocations.
 
-Parameters: α=1.5, β=5 — reflecting moderate concentration in the low-to-mid range with a long right tail.
+Parameters: α=1.5, β=5 ??reflecting moderate concentration in the low-to-mid range with a long right tail.
 
-**Sensitivity analysis:** P&L was materially more sensitive to β than α. Higher Speed allocation reduced this sensitivity — the risk-adjusted objective pushed toward elevated Speed investment.
+**Sensitivity analysis:** P&L was materially more sensitive to β than α. Higher Speed allocation reduced this sensitivity ??the risk-adjusted objective pushed toward elevated Speed investment.
 
 
 
@@ -2622,13 +2622,13 @@ def optimize_allocation(a, b_param):
 
     def objective(p):
         x, y, z = p
-        # Soft constraint: sum ≤ 100 (SLSQP handles this well)
+        # Soft constraint: sum ??100 (SLSQP handles this well)
         if x + y + z > 100.01: return 1e10
 
         A = 200000 * np.log(1 + x) / np.log(101)
         B = 0.07 * y
 
-        # Convert z allocation (0–100) to fraction (0–1)
+        # Convert z allocation (0??00) to fraction (0??)
         z_ratio = np.clip(z / 100, 1e-9, 1-1e-9)
 
         # Estimate rank using Beta CDF
@@ -2638,7 +2638,7 @@ def optimize_allocation(a, b_param):
         pnl = A * B * C
         return -pnl
 
-    # Constraint: x + y + z ≤ 100
+    # Constraint: x + y + z ??100
     cons = ({'type': 'ineq', 'fun': lambda p: 100 - np.sum(p)})
     bounds = [(0, 100), (0, 100), (0, 100)]
 
@@ -2696,7 +2696,7 @@ for i, b_t in enumerate(b_grid):
         # 2. Apply strategy from assumed parameters to actual parameter environment
         pnl_from_assumed = compute_pnl(x_assumed, a_t, b_t)
 
-        # Regret = max achievable P&L − strategy P&L under assumed params
+        # Regret = max achievable P&L ??strategy P&L under assumed params
         regret[i, j] = pnl_true_max - pnl_from_assumed
 
 ##################################
@@ -2902,15 +2902,15 @@ threshold_pct = (1 - rank_p) * 100
 
 print("----- ROBUST RESULT -----")
 
-print(f"A ≈ {opt_x:.2f}%")
-print(f"B ≈ {opt_y:.2f}%")
-print(f"C ≈ {opt_z:.2f}%")
+print(f"A ??{opt_x:.2f}%")
+print(f"B ??{opt_y:.2f}%")
+print(f"C ??{opt_z:.2f}%")
 
-print(f"C Score ≈ {C_score:.4f}")
+print(f"C Score ??{C_score:.4f}")
 
-print(f"Expected PnL ≈ {final_pnl - 50000:,.0f}")
+print(f"Expected PnL ??{final_pnl - 50000:,.0f}")
 
-print(f"Target Threshold ≈ top {threshold_pct:.2f}%")
+print(f"Target Threshold ??top {threshold_pct:.2f}%")
 
 
 ##################################
@@ -3025,12 +3025,12 @@ fig.show()
 ```
 
     ----- ROBUST RESULT -----
-    A ≈ 16.40%
-    B ≈ 49.70%
-    C ≈ 33.90%
-    C Score ≈ 0.6280
-    Expected PnL ≈ 220,432
-    Target Threshold ≈ 상위 34.00%
+    A ??16.40%
+    B ??49.70%
+    C ??33.90%
+    C Score ??0.6280
+    Expected PnL ??220,432
+    Target Threshold ???�위 34.00%
     
 
 

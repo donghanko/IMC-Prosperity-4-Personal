@@ -13,12 +13,12 @@ Round 3 introduced the first options layer. The key tension: theoretically sound
 
 **Sections:**
 1. Data loading & option type identification (call vs. put from price behavior)
-2. Arbitrage screening — mid-price vs. intrinsic value
+2. Arbitrage screening ??mid-price vs. intrinsic value
 3. Black-Scholes IV extraction via bisection
 4. IV surface visualization (cross-section & time series)
 5. Orc-Wing model fitting for fair value
 
-> **Key finding:** The IV surface showed persistent *upward slope as TTM decreased* — a volatility clustering signal that wasn't decoded until Round 4. Gamma scalping failed because realized moves were too small to generate gamma income against wide spread costs.
+> **Key finding:** The IV surface showed persistent *upward slope as TTM decreased* ??a volatility clustering signal that wasn't decoded until Round 4. Gamma scalping failed because realized moves were too small to generate gamma income against wide spread costs.
 
 
 ---
@@ -29,9 +29,9 @@ Classify options by strike into Deep ITM / ATM / Deep OTM based on price behavio
 
 | Strike range | Regime | Trading implication |
 |---|---|---|
-| 4,000–4,500 | Deep ITM | Delta ≈ 1; market make with passive quotes at mid ± 2 |
+| 4,000??,500 | Deep ITM | Delta ??1; market make with passive quotes at mid ± 2 |
 | ~5,200 | ATM | Highest edge; delta fluctuates most sharply |
-| 6,000–6,500 | Deep OTM | Mid quoted at 0.5, trades at 0; functionally illiquid |
+| 6,000??,500 | Deep OTM | Mid quoted at 0.5, trades at 0; functionally illiquid |
 
 
 
@@ -257,20 +257,20 @@ filtered_trades = trades[trades['symbol'] == 'VELVETFRUIT_EXTRACT']
 
 
 
-> **What we're establishing:** Before any model is applied, the asset universe needs to be mapped. HYDROGEL_PACK and VELVETFRUIT_EXTRACT are delta-1 products — linear exposure to the underlying. The 10 VOUCHERs are options. No call/put label was provided, so option type was inferred empirically from price behavior relative to the underlying.
+> **What we're establishing:** Before any model is applied, the asset universe needs to be mapped. HYDROGEL_PACK and VELVETFRUIT_EXTRACT are delta-1 products ??linear exposure to the underlying. The 10 VOUCHERs are options. No call/put label was provided, so option type was inferred empirically from price behavior relative to the underlying.
 >
-> **Finding:** Price behavior confirmed these are **call options**. The universe splits into three regimes — Deep ITM (price ≈ intrinsic value, delta ≈ 1, no edge), ATM (highest delta sensitivity, ~50 time value remaining, primary trading target), Deep OTM (effectively illiquid, trades at 0).
+> **Finding:** Price behavior confirmed these are **call options**. The universe splits into three regimes ??Deep ITM (price ??intrinsic value, delta ??1, no edge), ATM (highest delta sensitivity, ~50 time value remaining, primary trading target), Deep OTM (effectively illiquid, trades at 0).
 >
 > **Why this matters for everything downstream:** ATM is the only segment with meaningful spread income potential. Deep ITM is market-making territory only if arbitrage exists. Deep OTM is not worth modeling.
 
 ---
 ## Section 2: Arbitrage Screening
 
-Test whether any option trades below intrinsic value (call price < max(0, S−K)).  
-Any breach is a riskless arbitrage — buy the option, exercise immediately.
+Test whether any option trades below intrinsic value (call price < max(0, S?�K)).  
+Any breach is a riskless arbitrage ??buy the option, exercise immediately.
 
 > **Result:** No persistent violations found. Calendar arbitrage (convexity check) also clean.  
-> **Spread cost wall:** Mid-price signals showed 5–10 ticks of edge. Actual spreads exceeded 30 ticks → any taker strategy loses 20–25 per entry net.  
+> **Spread cost wall:** Mid-price signals showed 5??0 ticks of edge. Actual spreads exceeded 30 ticks ??any taker strategy loses 20??5 per entry net.  
 > **Implication:** Any profitable strategy must be a *maker*, not a taker.
 
 
@@ -285,11 +285,11 @@ filtered_trades = trades[trades['symbol'] == 'VELVETFRUIT_EXTRACT']
 
 ```
 
-> **What we found:** No persistent intrinsic value violations — calendar arbitrage was also clean (convexity held throughout). The market was structurally fair at the mid-price level.
+> **What we found:** No persistent intrinsic value violations ??calendar arbitrage was also clean (convexity held throughout). The market was structurally fair at the mid-price level.
 >
-> **The spread cost wall:** Mid-price signals showed 5–10 ticks of edge. Actual spreads exceeded 30 ticks. Taking liquidity → realized loss of 20–25 per entry. This single finding eliminated every taker-side strategy and forced the approach toward passive quoting.
+> **The spread cost wall:** Mid-price signals showed 5??0 ticks of edge. Actual spreads exceeded 30 ticks. Taking liquidity ??realized loss of 20??5 per entry. This single finding eliminated every taker-side strategy and forced the approach toward passive quoting.
 >
-> **Implication for strategy:** Deep ITM options (strikes 4000/4500) → market making with passive quotes at mid ± 2 ticks. Fair value as anchor makes this viable. Everything else requires a signal strong enough to survive 30+ tick spreads — a much higher bar.
+> **Implication for strategy:** Deep ITM options (strikes 4000/4500) ??market making with passive quotes at mid ± 2 ticks. Fair value as anchor makes this viable. Everything else requires a signal strong enough to survive 30+ tick spreads ??a much higher bar.
 
 ---
 ## Section 3: Black-Scholes IV Extraction
@@ -359,7 +359,7 @@ underlying_prices = prices[prices['product'] == 'VELVETFRUIT_EXTRACT'][['global_
 underlying_prices.rename(columns={'mid_price': 'S'}, inplace=True)
 
 # 2. Process option data
-# Extract strike from option symbol (e.g. VELVETFRUIT_C_10500 → 10500)
+# Extract strike from option symbol (e.g. VELVETFRUIT_C_10500 ??10500)
 # Adjust regex to match actual symbol format.
 def parse_strike(symbol):
     nums = re.findall(r'\d+', symbol)
@@ -423,14 +423,14 @@ fig.show()
 > **What we're building toward:** IV per strike per timestamp. The cross-sectional shape (smile vs. skew vs. clustering) and the time-series behavior (term structure) will determine whether a parametric model like Orc-Wing can generate reliable Z-scores for trading.
 
 ---
-## Section 4: IV Surface — Cross-Section & Time Series
+## Section 4: IV Surface ??Cross-Section & Time Series
 
 Plot IV across all strikes (cross-section) and over time (time series per strike).
 
 **Cross-section finding:** IV shows *clustering* rather than the expected smile/skew structure.  
 **Time-series finding:** Most strikes exhibit a persistent *upward trend in IV as TTM decreases*.
 
-This was the key unresolved question from Round 3 — decoded in Round 4 as a volatility clustering signature via log-moneyness.
+This was the key unresolved question from Round 3 ??decoded in Round 4 as a volatility clustering signature via log-moneyness.
 
 
 
@@ -466,8 +466,8 @@ for i, asset in enumerate(target_option_asset):
     
     merged['intrinsic'] = (merged['S'] - K).clip(lower=0)
    
-    # 4. Compute arbitrage gap: (intrinsic value − market price)
-    # Positive gap = market price below intrinsic value → arbitrage opportunity
+    # 4. Compute arbitrage gap: (intrinsic value ??market price)
+    # Positive gap = market price below intrinsic value ??arbitrage opportunity
     merged['gap'] = merged['intrinsic'] - merged['mid_price']
     
     # 5. Add to subplots
@@ -500,16 +500,16 @@ fig.show()
 
 
 
-> **Cross-section finding:** IV shows **clustering** rather than the expected smile or skew. Most strikes carry similar IV levels at any given point in time — the dispersion across strikes is low. This explains why gamma scalping failed (covered in Section 3b): if IV is clustered, realized moves relative to strike are small, and gamma income can't clear spread costs.
+> **Cross-section finding:** IV shows **clustering** rather than the expected smile or skew. Most strikes carry similar IV levels at any given point in time ??the dispersion across strikes is low. This explains why gamma scalping failed (covered in Section 3b): if IV is clustered, realized moves relative to strike are small, and gamma income can't clear spread costs.
 >
-> **Time-series finding:** Most strikes show a **persistent upward trend in IV as TTM decreases**. This was the key unresolved question in Round 3 — the signal was visible but the mechanism wasn't decoded until Round 4.
+> **Time-series finding:** Most strikes show a **persistent upward trend in IV as TTM decreases**. This was the key unresolved question in Round 3 ??the signal was visible but the mechanism wasn't decoded until Round 4.
 >
-> *(Round 4 answer: as TTM → 0, the denominator σ√(T−t) shrinks. For IV to rise, the market is keeping log(S/K) — log-moneyness — roughly constant. This is volatility clustering: realized moves clustering around the strike rather than diffusing away from it.)*
+> *(Round 4 answer: as TTM ??0, the denominator ???T?�t) shrinks. For IV to rise, the market is keeping log(S/K) ??log-moneyness ??roughly constant. This is volatility clustering: realized moves clustering around the strike rather than diffusing away from it.)*
 
 ---
 ## Section 3b: Gamma Scalping Attempt
 
-Delta-hedge an ATM option (long option, short Δ units of underlying). Rebalance as delta shifts — selling into rallies, buying into dips. Accumulated rebalancing P&L ≈ gamma.
+Delta-hedge an ATM option (long option, short ? units of underlying). Rebalance as delta shifts ??selling into rallies, buying into dips. Accumulated rebalancing P&L ??gamma.
 
 **Condition for profitability:** Gamma income > theta decay + transaction costs.
 
@@ -633,13 +633,13 @@ plt.show()
 
 
     
-![png](round3_analysis_files/round3_analysis_16_0.png)
+![png](_analysis_img/round3_analysis_16_0.png)
     
 
 
 > **Why gamma scalping was the natural next attempt:** ATM options have the highest gamma, and delta-hedging + rebalancing mechanically captures the gap between the option price curve and its delta tangent. If theta is near zero (as it appeared), the strategy should theoretically generate net gamma income.
 >
-> **Why it failed:** Rebalancing required crossing the spread on the underlying. The gamma realized per rebalancing cycle was insufficient to absorb those transaction costs. Confirmed by the IV clustering finding — low cross-sectional IV dispersion meant underlying moves relative to strike were small, making gamma income structurally inadequate against spread drag.
+> **Why it failed:** Rebalancing required crossing the spread on the underlying. The gamma realized per rebalancing cycle was insufficient to absorb those transaction costs. Confirmed by the IV clustering finding ??low cross-sectional IV dispersion meant underlying moves relative to strike were small, making gamma income structurally inadequate against spread drag.
 >
 > **The honest summary:** Gamma scalping was the right idea for the wrong market. It requires sufficient realized vol relative to spread costs. This market didn't have it.
 
@@ -725,7 +725,7 @@ for K in strikes:
 
 ```
 
-    VIX Average (전체 평균): 0.19748
+    VIX Average (?�체 ?�균): 0.19748
     
     IV Averages by Strike:
      - Strike 5000: 0.18573
@@ -739,9 +739,9 @@ for K in strikes:
 ---
 *Cells below: IV time series computation and Orc-Wing fitting.*
 
-> **Transition note:** Sections 1–3b established what doesn't work (arbitrage taking, gamma scalping) and why (spread costs, IV clustering). The remaining cells ask a different question: can we fit a parametric model to the IV surface and use deviations from that model as trading signals?
+> **Transition note:** Sections 1??b established what doesn't work (arbitrage taking, gamma scalping) and why (spread costs, IV clustering). The remaining cells ask a different question: can we fit a parametric model to the IV surface and use deviations from that model as trading signals?
 >
-> This is the Orc-Wing approach — if the model describes the surface well, Z-scores per option become entry/exit signals. If it doesn't describe the surface well, the Z-scores are noise.
+> This is the Orc-Wing approach ??if the model describes the surface well, Z-scores per option become entry/exit signals. If it doesn't describe the surface well, the Z-scores are noise.
 
 
 ```python
@@ -780,7 +780,7 @@ merged_df = pd.merge(options_df, underlying_df, on=['day', 'timestamp'], how='le
 
 # 2. Compute TTM (Time To Maturity)
 # Reference: 7 days to expiry at global timestamp 0 (day 0, ts 0).
-# One day = timestamps 0–999,900 (10,000 data points)
+# One day = timestamps 0??99,900 (10,000 data points)
 # timestamp / 1,000,000 = fraction of one day elapsed
 merged_df['TTM_days'] = 7 - merged_df['day'] - (merged_df['timestamp'] / 1000000)
 
@@ -922,9 +922,9 @@ $$
 \sigma(x) = \sigma_{ref} \cdot \left[1 + SSR\left(\frac{V_c(1-\rho)f_c(x) + V_p(1+\rho)f_p(x)}{2}\right)\right]
 $$
 
-Parameters: σ_ref (ATM vol), SSR (skew slope), V_c/V_p (wing weights), ρ (asymmetry).
+Parameters: ?_ref (ATM vol), SSR (skew slope), V_c/V_p (wing weights), ? (asymmetry).
 
-**Result: overfit.** Performance improved on specific options and specific days in a pattern that was data-specific, not structural. The Orc-Wing curve was not describing the market's actual IV dynamics — it was fitting noise.
+**Result: overfit.** Performance improved on specific options and specific days in a pattern that was data-specific, not structural. The Orc-Wing curve was not describing the market's actual IV dynamics ??it was fitting noise.
 
 
 
@@ -941,7 +941,7 @@ fit_df = plot_df[~plot_df['strike'].isin(excluded_strikes)].copy()
 fit_df = fit_df.dropna(subset=['log_moneyness', 'IV'])
 
 # Remove outliers
-# Exclude bisection results that hit bounds (1e-5 or 5.0) — these distort the plot scale
+# Exclude bisection results that hit bounds (1e-5 or 5.0) ??these distort the plot scale
 valid_mask = (fit_df['IV'] > 1e-4) & (fit_df['IV'] < 4.9)
 fit_df = fit_df[valid_mask]
 
@@ -1058,10 +1058,10 @@ except Exception as e:
 
 ```
 
-> **What the fitting showed:** Performance improved on specific options and specific days — but the pattern was data-specific, not structural. Cherry-picking those options was tempting but confirmed as overfitting. The Orc-Wing curve was not describing the market's actual IV dynamics.
+> **What the fitting showed:** Performance improved on specific options and specific days ??but the pattern was data-specific, not structural. Cherry-picking those options was tempting but confirmed as overfitting. The Orc-Wing curve was not describing the market's actual IV dynamics.
 >
 > **Why:** Orc-Wing is a powerful model applied to a market with too few strikes and too much IV clustering. The parametric surface it fits is richer than the actual data generating process. More parameters than signal.
 >
-> **What would have worked (found in Round 4):** Instead of fitting a parametric model to the surface, rank log-moneyness across strikes and trade mean-reversion. The signal was always there — it required the right analytical frame.
+> **What would have worked (found in Round 4):** Instead of fitting a parametric model to the surface, rank log-moneyness across strikes and trade mean-reversion. The signal was always there ??it required the right analytical frame.
 
 
