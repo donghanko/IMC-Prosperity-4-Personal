@@ -6,7 +6,7 @@ Most competition writeups document what worked. This one documents what didn't �
 
 This repository archives the full trail of my **individual research iterations** throughout IMC Prosperity 4 (2026): the model derivations, dead ends, and pivots in thinking that never make it into a polished final submission. The goal isn't to showcase clean results. It's to show how I think when the market pushes back.
 
-> **Note on scope:** All models, derivations, and simulation plots here reflect my own research footprint. No shared team assets or production-level code are published, in respect of team confidentiality. Finalized production strategies will be documented in a separate repository.
+> **Note on scope:** All models, derivations, and simulation plots here reflect my own research footprint. No shared team assets or production-level code are published, out of respect for team confidentiality. Finalized production strategies will be documented in a separate repository.
 
 ---
 
@@ -18,28 +18,31 @@ IMC-Prosperity-4-Personal/
 │   ├── ROUND1_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
+│   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round2/
 │   ├── ROUND2_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
+│   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round3/
 │   ├── ROUND3_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
+│   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round4/
 │   ├── ROUND4_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
+│   ├── _img/                   # png files for Description.md
 │   └── ...
 ├── round5/
 │   ├── ROUND5_DESCRIPTION.md   # description
 │   ├── _source_code/           # analysis source code with output markdown file
 │   ├── _source_data/           # data set
-│   └── ...
-├── img/             
+│   └── ...          
 └── README.md
 ```
 
@@ -108,27 +111,27 @@ The scars are in the writeups. The framework they produced is what this archive 
 GitHub often fails to render large Jupyter notebooks. If you want to view the full analysis including outputs and graphs, please use the Google Colab links below:
 
 **Round 1**
-- [round1_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/_source_code/research_code.ipynb)
+- [research_code.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round1/_source_code/research_code.ipynb)
 
 
 **Round 2**
-- [round2_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/_source_code/research_code.ipynb)
+- [research_code.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round2/_source_code/research_code.ipynb)
 
 **Round 3**
-- [round3_analysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/_source_code/research_code.ipynb)
+- [research_code.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round3/_source_code/research_code.ipynb)
 
 **Round 4**
-- [TestAnalysis.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/_source_code/research_code.ipynb)
+- [research_code.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round4/_source_code/research_code.ipynb)
 
 **Round 5**
-- [round5_annotated.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/_source_code/research_code.ipynb)
+- [research_code.ipynb](https://colab.research.google.com/github/donghanko/IMC-Prosperity-4-Personal/blob/main/round5/_source_code/research_code.ipynb)
 
 ---
 
 ## Contents
 
-- [Round 1: Market Making & Inventory Management](./round1/round1.md)
-- [Round 2: Game Theory & Resource Allocation](./round2/round2.md)
-- [Round 3: Options Volatility Modeling & Market Making](./round3/round3.md)
-- [Round 4: Trader Identity & Microstructure Analysis](./round4/round4.md)
-- [Round 5: Pairs Trading Post-Mortem & Overfitting Analysis](./round5/round5.md)
+- [Round 1: Market Making & Inventory Management](./round1/ROUND1_DESCRIPTION.md)
+- [Round 2: Game Theory & Resource Allocation](./round2/ROUND2_DESCRIPTION.md)
+- [Round 3: Options Volatility Modeling & Market Making](./round3/ROUND3_DESCRIPTION.md)
+- [Round 4: Trader Identity & Microstructure Analysis](./round4/ROUND4_DESCRIPTION.md)
+- [Round 5: Pairs Trading Post-Mortem & Overfitting Analysis](./round5/ROUND5_DESCRIPTION.md)

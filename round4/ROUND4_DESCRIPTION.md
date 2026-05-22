@@ -37,7 +37,7 @@ Trades were visualized per Mark using Plotly, overlaid on the underlying price s
 
 <p align="center">
   <figure align="center">
-    <img src="../img/round4/trader_order_flow.png" width="70%">
+    <img src="./_img/trader_order_flow.png" width="70%">
     <figcaption><small><i>Figure 1: Plotly Visualization of Disclosed Trader Order Flow. Trades by Mark 67 (Aggregator) and Mark 49 (Momentum Seller) are overlaid on the underlying price series to detect price impact signals.</i></small></figcaption>
   </figure>
 </p>
@@ -66,13 +66,13 @@ Tested whether any Mark's trade timing correlated with deviations from the fitte
   <tr>
     <td>
       <figure align="center">
-        <img src="../img/round4/delta_hedging.png" width=150%">
+        <img src="./_img/delta_hedging.png" width="150%">
         <figcaption><small><i>Figure 2: Aggregate Trader Delta Exposure. The persistent upward bias without rebalancing confirms no market participant was running a delta-neutral framework.</i></small></figcaption>
       </figure>
     </td>
     <td>
       <figure align="center">
-        <img src="../img/round4/wingmodel.png" width="150%">
+        <img src="./_img/wingmodel.png" width="150%">
         <figcaption><small><i>Figure 3: Arbitrage Screening via Wing Model. Trade timing across all Marks showed zero correlation with fitted IV surface deviations, ruling out cross-sectional volatility arbitrageurs.</i></small></figcaption>
       </figure>
     </td>
@@ -132,7 +132,7 @@ Parameters $\kappa$, $\theta$, $\sigma$ were estimated via OLS. The equilibrium 
 
 <p align='center'>
   <figure align="center">
-    <img src="../img/round4/OU.png" width="65%">
+    <img src="./_img/OU.png" width="65%">
     <figcaption><small><i>Figure 4: Ornstein-Uhlenbeck Process Validation. Confirms visual and statistical mean reversion of log-moneyness, though the theoretical equilibrium band proved too conservative for live execution relative to empirical percentiles.</i></small></figcaption>
   </figure>
 </p>
@@ -209,5 +209,5 @@ Rather than the naive rule (exercise whichever option is currently ITM), a resid
 
 ---
 
-*[← Round 3: Options Volatility Modeling & Market Making](../round3/round3.md)*
-*[Round 5: Pairs Trading Post-Mortem & Overfitting Analysis →](../round5/round5.md)*
+*[← Round 3: Options Volatility Modeling & Market Making](../round3/ROUND3_DESCRIPTION.md)*
+*[Round 5: Pairs Trading Post-Mortem & Overfitting Analysis →](../round5/ROUND5_DESCRIPTION.md)*

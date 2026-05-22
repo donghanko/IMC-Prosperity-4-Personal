@@ -13,7 +13,7 @@ That hint became the problem.
 
 This document is not a strategy writeup. It is a forensic account of how a weak in-sample signal — never validated out-of-sample — made it into live deployment, and what the failure cost.
 
-The full exploratory research process is documented in [`round5_annotated.ipynb`](./round5_annotated.ipynb).
+The full exploratory research process is documented in [`research_code.ipynb`](./_source_code/research_code.ipynb).
 
 ---
 
@@ -112,4 +112,4 @@ The specific changes:
 
 ---
 
-*[← Round 4: Trader Microstructure Analysis & Exotic Options Portfolio](../round4/round4.md)*
+*[← Round 4: Trader Microstructure Analysis & Exotic Options Portfolio](../round4/ROUND4_DESCRIPTION.md)*

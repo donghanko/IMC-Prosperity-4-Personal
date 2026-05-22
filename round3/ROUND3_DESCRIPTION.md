@@ -2,7 +2,7 @@
 
 > **Theme:** *"Options Require Decisions"*
 
-> **Assets:** ① HYDROGEL_PACK ②  VELVETFRUIT_EXTRACT (delta-1) ③  VELVETFRUIT_EXTRACT_VOUCHERs (options, varying 10 strikes)
+> **Assets:** ① HYDROGEL_PACK ②  VELVETFRUIT_EXTRACT (delta-1) ③  VELVETFRUIT_EXTRACT_VOUCHERS (options, varying 10 strikes)
 
 > **Structure:** European-style calls, 7-day expiry from Round 1. No early exercise. Positions liquidated at hidden fair value at round end.
 
@@ -47,9 +47,7 @@ The implication was structural: **any profitable strategy in this options market
 
 Calendar arbitrage was screened separately. Convexity held throughout — no calendar arb opportunities were found.
 
----
 
----
 
 ## 3. Gamma Scalping
 
@@ -146,5 +144,5 @@ Discretized across available strikes, this gives a fair volatility estimate with
 
 ---
 
-*[← Round 2: MAF Auction Bidding & Resource Allocation Optimization](../round2/round2.md)*
-*[Round 4: Trader Microstructure Analysis & Exotic Options Portfolio →](../round4/round4.md)*
+*[← Round 2: MAF Auction Bidding & Resource Allocation Optimization](../round2/ROUND2_DESCRIPTION.md)*
+*[Round 4: Trader Microstructure Analysis & Exotic Options Portfolio →](../round4/ROUND4_DESCRIPTION.md)*

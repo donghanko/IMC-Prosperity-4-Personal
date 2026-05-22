@@ -87,8 +87,14 @@ $$
 Y \sim \text{Beta}(\alpha,\ \beta)
 $$
 
-Parameters were set to reflect moderate concentration in the low-to-mid range, with a long right tail for aggressive Speed investors. LLM-suggested parameters ($\alpha=1.5, \beta=5$) were used as a starting point and stress-tested across a parameter grid.
+Parameters were set to reflect moderate concentration in the low-to-mid range, with a long right tail for aggressive Speed investors. Estimated parameters ($\alpha=2.0, \beta=5$) were used as a starting point and stress-tested across a parameter grid.
 
+<p align="center">
+  <figure align="center">
+    <img src="./_img/beta.png" width="120%">
+    <figcaption><small><i>Figure 1: Beta Distribution.</i></small></figcaption>
+  </figure>
+</p>
 ### Sensitivity Analysis & Optimization
 
 With Speed distribution modeled, P&L was optimized over budget allocations $(x_R, x_S, x_{Sp})$ subject to $x_R + x_S + x_{Sp} = 50{,}000$.
@@ -139,5 +145,5 @@ This is a concrete example of **prior misspecification**: the model captured the
 
 ---
 
-*[← Round 1: Alpha Generation & Toxic Flow Identification](../round1/round1.md)*
-*[Round 3: Options Volatility Modeling & Market Making →](../round3/round3.md)*
+*[← Round 1: Alpha Generation & Market Making](../round1/ROUND1_DESCRIPTION.md)*
+*[Round 3: Options Volatility Modeling & Market Making →](../round3/ROUND3_DESCRIPTION.md)*

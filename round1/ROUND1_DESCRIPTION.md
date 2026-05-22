@@ -21,6 +21,13 @@ PEPPER exhibited a clear and persistent **linear price trend** across all three 
 
 This made static fair value anchors (rolling mid, VWAP) structurally wrong for this asset. A quote centered on the current mid would be systematically stale the moment it was placed.
 
+<p align="center">
+  <figure align="center">
+    <img src="./_img/pepper.png" width="120%">
+    <figcaption><small><i>Figure 1: PEPPER Mid Price with Trade Price</i></small></figcaption>
+  </figure>
+</p>
+
 ### Fair value construction
 
 Fair value was derived directly from the observed trend:
@@ -44,6 +51,13 @@ The key insight was recognizing that the spread cost on PEPPER was manageable, a
 ### What the data showed
 
 OSMIUM displayed a very different character: prices oscillated around the **10,000 level** with no clear directional trend. The natural approach was mean-reversion market making — quote around a stable fair value, collect spread as prices revert.
+
+<p align="center">
+  <figure align="center">
+    <img src="./_img/osmium.png" width="120%">
+    <figcaption><small><i>Figure 2: OSMIUM Mid Price with Trade Price</i></small></figcaption>
+  </figure>
+</p>
 
 ### Fair value construction
 
@@ -88,4 +102,4 @@ This is a meaningful design observation: the absence of FIFO queue priority crea
 
 ---
 
-*[Round 2: Market Access Bidding & Resource Allocation →](../round2/round2.md)*
+*[Round 2: Market Access Bidding & Resource Allocation →](../round2/ROUND2_DESCRIPTION.md)*
